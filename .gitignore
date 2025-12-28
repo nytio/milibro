@@ -1,0 +1,49 @@
+# Build/artefactos
+/build/*
+!/build/.gitkeep
+/dist/*
+!/dist/.gitkeep
+
+# Auxiliares LaTeX (por si se ejecuta sin outdir)
+*.aux
+*.log
+*.toc
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.xdv
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.ilg
+*.ind
+*.idx
+*.xdy
+
+# Tex4ebook/TeX4ht/pandoc temporales
+*.4ct
+*.4tc
+*.tmp
+*.xref
+*.xml
+*.html
+*.css
+
+# Salidas/temporales típicos en raíz (preferimos dist/ y build/)
+/content.opf
+/milibro-epub/
+/milibro*.html
+/milibro.css
+/milibro.ncx
+/milibro.dvi
+/milibro.idv
+/milibro.lg
+/milibro.tmp
+/milibro.xref

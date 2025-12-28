@@ -1,0 +1,38 @@
+\documentclass[12pt,oneside,openany]{book}
+
+% Configuración pensada para KDP (tamaño típico 6x9) aunque el entregable actual sea PDF.
+\usepackage[papersize={6in,9in},top=0.75in,bottom=0.75in,inner=0.9in,outer=0.7in]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{bookmark}
+\hypersetup{
+  pdftitle={Mi libro},
+  pdfauthor={Autor},
+  pdfsubject={Libro},
+  pdfcreator={LaTeX},
+  pdfproducer={pdfLaTeX}
+}
+
+\title{Mi libro}
+\author{Autor}
+\date{}
+
+\begin{document}
+
+\frontmatter
+\hypersetup{pageanchor=false}
+\maketitle
+\tableofcontents
+\hypersetup{pageanchor=true}
+
+\mainmatter
+\input{tex/capitulo1}
+
+\end{document}
