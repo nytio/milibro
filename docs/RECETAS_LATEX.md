@@ -40,10 +40,41 @@ Notas:
 - `tex/preambulo.tex` ya incluye `graphicx` y `\graphicspath{{img/}}`, por eso puedes referenciar `figura.png` sin prefijar `img/`.
 - Evita rutas absolutas: rompen compilación/EPUB.
 
+Para generar la “lista de figuras” en el frontmatter:
+- Edita `tex/metadatos.tex` y pon `\newcommand{\LibroMostrarListaFiguras}{1}`.
+
 ## Nota al pie (sin bibliografía)
 
 ```tex
 Una idea con contexto.\footnote{Aquí va la nota al pie.}
+```
+
+## Tabla + caption + referencia (y lista de tablas)
+
+```tex
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{ll}
+    \textbf{Elemento} & \textbf{Estado} \\
+    Capítulo 1 & Borrador \\
+    Capítulo 2 & Revisión \\
+  \end{tabular}
+  \caption{Estado de capítulos.}
+  \label{tab:estado-capitulos}
+\end{table}
+
+Ver la tabla~\ref{tab:estado-capitulos}.
+```
+
+Para generar la “lista de tablas” en el frontmatter:
+- Edita `tex/metadatos.tex` y pon `\newcommand{\LibroMostrarListaTablas}{1}`.
+
+## Bibliografía (citas) con `.bib`
+
+Ver `docs/BIBLIOGRAFIA.md`. Ejemplo mínimo:
+
+```tex
+Texto con cita.\autocite{borges1944}
 ```
 
 ## Listas
@@ -137,3 +168,11 @@ hi\-per\-texto % sugiere cortes silábicos en una palabra difícil
 
 - Para PDF: `\newpage` puede ser útil.
 - Para eBook: úsalo con moderación; el flujo se reacomoda y no hay “páginas fijas”.
+
+## Índice analítico (palabras clave al final)
+
+Ver `docs/INDICES.md`. Ejemplo:
+
+```tex
+campo\index{campo}
+```

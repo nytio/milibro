@@ -34,10 +34,28 @@ Atajos útiles:
 ## Recomendaciones para trabajar en `tex/`
 
 - Mantén cada capítulo en un archivo separado (`tex/capituloN.tex`) y no repitas preámbulo: solo contenido.
+- Para libros largos, `tex/chapters.tex` usa `\milibroChapter{...}` (permite compilar solo capítulos específicos con `INCLUDEONLY=...`).
 - Usa etiquetas estables para referencias:
   - `\label{chap:...}` para capítulos, `\label{sec:...}` para secciones, `\label{fig:...}` para figuras.
 - Evita rutas absolutas y recursos fuera del repo (rompe compilación/EPUB). Todo debe vivir en `img/` u otra carpeta del proyecto.
 - Mantén el LaTeX “semántico” (títulos, secciones, listas) y evita maquetación rígida si piensas convertir a EPUB.
+
+## Funciones avanzadas (opcionales)
+
+Todas se activan editando `tex/metadatos.tex`:
+
+- Lista de figuras: `\LibroMostrarListaFiguras` (`0/1`).
+- Lista de tablas: `\LibroMostrarListaTablas` (`0/1`).
+- Bibliografía con `.bib` (biblatex+biber): `\LibroUsarBibliografia` (`0/1`) y `tex/referencias.bib`.
+- Índice analítico: `\LibroUsarIndiceAnalitico` (`0/1`) y marcas en el texto con `\index{...}`.
+
+Requiere:
+- Bibliografía: `biber`.
+- Índice analítico: `makeindex`.
+
+Guías:
+- Bibliografía: `docs/BIBLIOGRAFIA.md`.
+- Índices/listas y compilación parcial: `docs/INDICES.md`.
 
 ## Requisitos (herramientas)
 
@@ -89,6 +107,7 @@ Targets:
 Variables útiles:
 - `OPEN_VIEWER=0 make pdf` / `OPEN_VIEWER=0 make epub`: desactiva la apertura automática del visor.
 - `EPUB_FORMAT=epub2 make epub` o `EPUB_FORMAT=epub3 make epub`: el formato usado por `tex4ebook` (por defecto `epub3`).
+- `INCLUDEONLY=capitulo3 make pdf`: compila solo ese capítulo (o varios separados por coma: `capitulo2,capitulo3`).
 - `FILES="tex/capitulo1.tex tex/backmatter.tex" make spellcheck`: limita archivos a revisar.
 - `SPELL_LANG=es make spellcheck`: idioma del corrector (aspell/hunspell).
 - `ASPELL_PERSONAL=notes/aspell.es.pws make spellcheck`: diccionario personal del proyecto (si aplica).
@@ -110,6 +129,8 @@ Notas:
 
 - [`docs/INICIO_RAPIDO.md`](docs/INICIO_RAPIDO.md): el “camino feliz” para empezar.
 - [`docs/RECETAS_LATEX.md`](docs/RECETAS_LATEX.md): ejemplos cortos (capítulos, referencias, imágenes, notas).
+- [`docs/BIBLIOGRAFIA.md`](docs/BIBLIOGRAFIA.md): bibliografía con `.bib` (biblatex+biber) y alternativas simples.
+- [`docs/INDICES.md`](docs/INDICES.md): TOC, lista de figuras/tablas e índice analítico.
 
 ## Licencia
 

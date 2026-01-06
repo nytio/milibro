@@ -88,4 +88,20 @@
 \tableofcontents
 \cleardoublepage
 
+\ifnum\LibroMostrarListaFiguras=1\relax
+  \phantomsection
+  \pdfbookmark[0]{\listfigurename}{lof}
+  \addcontentsline{toc}{chapter}{\listfigurename}
+  \listoffigures
+  \cleardoublepage
+\fi
+
+\ifnum\LibroMostrarListaTablas=1\relax
+  \phantomsection
+  \pdfbookmark[0]{\listtablename}{lot}
+  \addcontentsline{toc}{chapter}{\listtablename}
+  \listoftables
+  \cleardoublepage
+\fi
+
 \hypersetup{pageanchor=true}

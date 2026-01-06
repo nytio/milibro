@@ -73,6 +73,18 @@ else
   status_line "EPUB" 0 "instala tex4ebook o pandoc"
 fi
 
+if have biber; then
+  status_line "Biber" 1 "bibliografía (biblatex)"
+else
+  status_line "Biber" 0 "necesario solo si usas bibliografía (biblatex)"
+fi
+
+if have makeindex; then
+  status_line "MakeIndex" 1 "índice analítico"
+else
+  status_line "MakeIndex" 0 "necesario solo si usas índice analítico"
+fi
+
 if have aspell; then
   if aspell --lang="$lang" dump master >/dev/null 2>&1; then
     status_line "Ortografía" 1 "aspell ($lang)"
@@ -113,4 +125,3 @@ if [[ "$strict" -eq 1 && "$epub_ok" -ne 1 ]]; then
   exit 1
 fi
 exit 0
-

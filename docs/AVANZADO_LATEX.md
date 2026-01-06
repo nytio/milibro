@@ -4,6 +4,10 @@ Este documento reúne recetas para casos más complejos (partituras, acordes, gr
 
 Dónde poner paquetes/configuración: en este repo, normalmente en `tex/preambulo.tex`.
 
+Guías relacionadas del repo:
+- Bibliografía y citas: `docs/BIBLIOGRAFIA.md`.
+- Listas e índices (figuras/tablas/índice analítico): `docs/INDICES.md`.
+
 ## Música y partituras: opciones prácticas
 
 ### Opción A (recomendada): LilyPond + incluir como PDF
@@ -353,7 +357,7 @@ Capítulo & Páginas & Estado \\
 
 ### Índice analítico y glosario (si el libro lo pide)
 
-- Índice: `imakeidx` (genera índice con `makeindex`/latexmk).
+- Índice: `makeidx` (genera índice con `makeindex`/latexmk).
 - Glosario: `glossaries` (más pesado, pero potente).
 
 Ambos añaden pasos/auxiliares a la compilación; `latexmk` suele manejarlos si está configurado.

@@ -12,6 +12,27 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{bookmark}
 
+% === Bibliografía (opcional) ===
+% Activa en tex/metadatos.tex: \newcommand{\LibroUsarBibliografia}{1}
+% Crea tu fichero: tex/referencias.bib
+\ifnum\LibroUsarBibliografia=1\relax
+  \IfFileExists{tex/referencias.bib}{%
+    \usepackage{csquotes}
+    \usepackage[backend=biber,style=authoryear,sorting=nyt]{biblatex}
+    \addbibresource{tex/referencias.bib}
+    \DefineBibliographyStrings{spanish}{bibliography={Bibliografía}}
+  }{%
+    \typeout{milibro: \string\\LibroUsarBibliografia=1 pero falta tex/referencias.bib}%
+  }%
+\fi
+
+% === Índice analítico (opcional) ===
+% Activa en tex/metadatos.tex: \newcommand{\LibroUsarIndiceAnalitico}{1}
+\ifnum\LibroUsarIndiceAnalitico=1\relax
+  \usepackage{makeidx}
+  \makeindex
+\fi
+
 % Ajustes típicos para libro (KDP/impresión): sangría, sin espacio extra entre párrafos.
 \setlength{\parindent}{1.25em}
 \setlength{\parskip}{0pt}
@@ -31,3 +52,30 @@
     \endgroup #3%
   \fi
 }
+
+% Inclusión de capítulos con soporte de "solo estos capítulos".
+% Si defines \IncludeOnlyList (separado por comas), solo se compilan esos.
+% Ejemplo: \def\IncludeOnlyList{capitulo2,capitulo3}
+\makeatletter
+\newcommand{\milibroChapter}[1]{%
+  \ifdefined\IncludeOnlyList
+    \milibroIfBlankTF{\IncludeOnlyList}{%
+      \input{tex/#1}%
+    }{%
+      \def\milibro@wanted{0}%
+      \edef\milibro@name{#1}%
+      \@for\milibro@item:=\IncludeOnlyList\do{%
+        \edef\milibro@item{\milibro@item}%
+        \ifx\milibro@item\milibro@name
+          \def\milibro@wanted{1}%
+        \fi
+      }%
+      \ifnum\milibro@wanted=1\relax
+        \input{tex/#1}%
+      \fi
+    }%
+  \else
+    \input{tex/#1}%
+  \fi
+}
+\makeatother

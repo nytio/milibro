@@ -6,6 +6,7 @@ DIST_DIR := dist
 SCRIPTS_DIR := scripts
 OPEN_VIEWER ?= 1
 EPUB_FORMAT ?= epub3
+INCLUDEONLY ?=
 
 .PHONY: all help doctor pdf epub dist clean dirs check watch new-chapter spellcheck languagetool
 
@@ -28,6 +29,7 @@ help:
 	  "Variables útiles:" \
 	  "  OPEN_VIEWER=0            No abrir visor (PDF/EPUB)" \
 	  "  EPUB_FORMAT=epub2|epub3  Formato para tex4ebook" \
+	  "  INCLUDEONLY=capitulo1    Compila solo esos capítulos (separados por coma)" \
 	  "  FILES=\"...\"              Limita archivos (spellcheck/languagetool)"
 
 doctor:
@@ -37,7 +39,7 @@ dirs:
 	@mkdir -p "$(BUILD_DIR)" "$(DIST_DIR)"
 
 pdf: dirs
-	@BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" OPEN_VIEWER="$(OPEN_VIEWER)" bash "$(SCRIPTS_DIR)/build_pdf.sh" "$(MAIN_TEX)"
+	@BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" OPEN_VIEWER="$(OPEN_VIEWER)" INCLUDEONLY="$(INCLUDEONLY)" bash "$(SCRIPTS_DIR)/build_pdf.sh" "$(MAIN_TEX)"
 
 epub: dirs
 	@BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" OPEN_VIEWER="$(OPEN_VIEWER)" EPUB_FORMAT="$(EPUB_FORMAT)" bash "$(SCRIPTS_DIR)/build_epub.sh" "$(MAIN_TEX)"
@@ -45,7 +47,7 @@ epub: dirs
 dist: pdf epub
 
 check: dirs
-	@BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" OPEN_VIEWER=0 bash "$(SCRIPTS_DIR)/check.sh" "$(MAIN_TEX)"
+	@BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" OPEN_VIEWER=0 INCLUDEONLY="$(INCLUDEONLY)" bash "$(SCRIPTS_DIR)/check.sh" "$(MAIN_TEX)"
 
 watch: dirs
 	@if command -v latexmk >/dev/null 2>&1; then \

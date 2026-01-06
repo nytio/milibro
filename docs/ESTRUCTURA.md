@@ -12,6 +12,7 @@ El repositorio está pensado para escribir y publicar desde la terminal, separan
   - `tex/chapters.tex`: lista de capítulos incluidos (se edita al añadir capítulos).
   - `tex/capituloN.tex`: capítulos.
   - `tex/backmatter.tex`: secciones finales (p.ej., “Sobre el autor”).
+  - (Opcional) `tex/referencias.bib`: bibliografía en formato BibTeX (si activas biblatex).
 - `img/`: imágenes (rutas siempre relativas).
 - `scripts/`: compilación, conversión y utilidades.
 - `build/`: artefactos de compilación (aux/log/pdf intermedio).

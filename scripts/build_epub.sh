@@ -75,6 +75,9 @@ if command -v pandoc >/dev/null 2>&1; then
   done
   [[ -n "$cover_img" ]] && pandoc_args+=(--epub-cover-image="$cover_img")
   [[ -f metadata.yaml ]] && pandoc_args+=(--metadata-file=metadata.yaml)
+  if [[ -f tex/referencias.bib ]]; then
+    pandoc_args+=(--citeproc --bibliography=tex/referencias.bib)
+  fi
   pandoc "${pandoc_args[@]}" "$flattened_tex"
   printf 'EPUB listo: %s/%s.epub\n' "$dist_dir" "$jobname"
 

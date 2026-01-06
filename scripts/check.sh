@@ -12,7 +12,7 @@ build_dir="${BUILD_DIR:-build}"
 dist_dir="${DIST_DIR:-dist}"
 jobname="$(basename "$main_tex" .tex)"
 
-OPEN_VIEWER=0 BUILD_DIR="$build_dir" DIST_DIR="$dist_dir" bash "$script_dir/build_pdf.sh" "$main_tex"
+OPEN_VIEWER=0 BUILD_DIR="$build_dir" DIST_DIR="$dist_dir" INCLUDEONLY="${INCLUDEONLY:-}" bash "$script_dir/build_pdf.sh" "$main_tex"
 
 log="$build_dir/$jobname.log"
 [[ -f "$log" ]] || die "no se encontró el log esperado: $log"
@@ -29,6 +29,16 @@ search_log() {
 failed=0
 if search_log "undefined references|There were undefined references|LaTeX Warning: Reference"; then
   echo "Problema: referencias indefinidas en $log" >&2
+  failed=1
+fi
+
+if search_log "undefined citations|There were undefined citations|LaTeX Warning: Citation|Package biblatex Warning: Please \\(re\\)run Biber"; then
+  echo "Problema: citas/bibliografía incompleta en $log" >&2
+  failed=1
+fi
+
+if search_log "Input index file .*\\.idx not found|Usage: makeindex|makeindex.*returned with code"; then
+  echo "Problema: índice analítico falló (makeindex) en $log" >&2
   failed=1
 fi
 

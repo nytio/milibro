@@ -39,7 +39,7 @@ cat >"$chapter_file" <<EOF
 
 EOF
 
-printf '\\input{%s}\n' "${chapter_file%.tex}" >>"$chapters_list"
+printf '\\milibroChapter{%s}\n' "capitulo${next_n}" >>"$chapters_list"
 
 printf 'Capítulo creado: %s\n' "$chapter_file"
 printf 'Incluido en: %s\n' "$chapters_list"

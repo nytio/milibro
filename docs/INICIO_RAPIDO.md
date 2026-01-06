@@ -41,3 +41,6 @@ Notas:
 
 - Ver `docs/RECETAS_LATEX.md`.
 
+Si necesitas funciones “de libro largo”:
+- Bibliografía: `docs/BIBLIOGRAFIA.md`.
+- Listas e índices (figuras/tablas/índice analítico): `docs/INDICES.md`.

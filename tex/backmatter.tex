@@ -3,3 +3,24 @@
 
 Escribe aquí una breve biografía del autor.
 
+\ifnum\LibroUsarBibliografia=1\relax
+  \IfFileExists{tex/referencias.bib}{%
+    \cleardoublepage
+    \phantomsection
+    \addcontentsline{toc}{chapter}{Bibliografía}
+    \printbibliography[title={Bibliografía}]
+  }{%
+    % Si activaste bibliografía pero falta el .bib, deja un recordatorio visible.
+    \cleardoublepage
+    \chapter*{Bibliografía}
+    \addcontentsline{toc}{chapter}{Bibliografía}
+    Falta el archivo \texttt{tex/referencias.bib}. Ver \texttt{docs/BIBLIOGRAFIA.md}.
+  }%
+\fi
+
+\ifnum\LibroUsarIndiceAnalitico=1\relax
+  \cleardoublepage
+  \phantomsection
+  \addcontentsline{toc}{chapter}{\indexname}
+  \printindex
+\fi
