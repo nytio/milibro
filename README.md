@@ -2,21 +2,21 @@
 
 Proyecto para escribir un libro en **LaTeX** en **Ubuntu desde la terminal**, generando un **PDF** (pensado para KDP/impresión) y un **EPUB** (para Kindle/KDP) con un flujo reproducible vía `make`.
 
-La guía de trabajo del agente está en `AGENTS.md` y el documento objetivo/base está en `Escribir un libro con LaTeX en Ubuntu desde la terminal.pdf`.
+La guía de trabajo del agente está en [`AGENTS.md`](AGENTS.md) y el documento objetivo/base está en [`Escribir un libro con LaTeX en Ubuntu desde la terminal.pdf`](Escribir%20un%20libro%20con%20LaTeX%20en%20Ubuntu%20desde%20la%20terminal.pdf).
 
 ## Estructura del repositorio
 
-- `milibro.tex`: archivo maestro (configurado para tamaño 6x9 y TOC navegable en PDF).
-- `tex/`: contenido del libro por capítulos/secciones.
-  - Ejemplo: `tex/capitulo1.tex` (poema en prosa de prueba).
-  - Soporte: `tex/metadatos.tex`, `tex/preambulo.tex`, `tex/frontmatter.tex`, `tex/chapters.tex`, `tex/backmatter.tex`.
-- `img/`: imágenes y recursos gráficos del libro (siempre con rutas relativas, p.ej. `img/figura.png`).
-  - Portada: `img/portada.jpg` (ver `img/README.md`).
-- `scripts/`: scripts usados por el `Makefile` para compilar/limpiar y utilidades de revisión de texto.
-- `build/`: artefactos de compilación (auxiliares y salidas intermedias).
-- `dist/`: entregables finales (PDF/EPUB generados).
-- `docs/`: documentación operativa (estructura y checklist de publicación).
-- `notes/`: notas de trabajo del escritor (opcional).
+- [`milibro.tex`](milibro.tex): archivo maestro (configurado para tamaño 6x9 y TOC navegable en PDF).
+- [`tex/`](tex/): contenido del libro por capítulos/secciones.
+  - Ejemplo: [`tex/capitulo1.tex`](tex/capitulo1.tex) (poema en prosa de prueba).
+  - Soporte: [`tex/metadatos.tex`](tex/metadatos.tex), [`tex/preambulo.tex`](tex/preambulo.tex), [`tex/frontmatter.tex`](tex/frontmatter.tex), [`tex/chapters.tex`](tex/chapters.tex), [`tex/backmatter.tex`](tex/backmatter.tex).
+- [`img/`](img/): imágenes y recursos gráficos del libro (siempre con rutas relativas, p.ej. `img/figura.png`).
+  - Portada: [`img/portada.jpg`](img/portada.jpg) (ver [`img/README.md`](img/README.md)).
+- [`scripts/`](scripts/): scripts usados por el [`Makefile`](Makefile) para compilar/limpiar y utilidades de revisión de texto.
+- [`build/`](build/): artefactos de compilación (auxiliares y salidas intermedias).
+- [`dist/`](dist/): entregables finales (PDF/EPUB generados).
+- [`docs/`](docs/): documentación operativa (estructura y checklist de publicación).
+- [`notes/`](notes/): notas de trabajo del escritor (opcional).
 
 ## Recomendaciones para trabajar en `tex/`
 
@@ -56,7 +56,7 @@ Nota: estos comandos son solo referencia; instala lo que necesites según tu sis
 - EPUB (si no viene con tu TeX Live): `sudo apt install pandoc tidy`
 - Ortografía: `sudo apt install aspell aspell-es` (o `sudo apt install hunspell hunspell-es`)
 - Cliente de LanguageTool (para `make languagetool`): `sudo apt install curl python3`
-- LanguageTool (server local): ver `notes/GUIA_DE_TRABAJO.md` (no se instala desde este repo)
+- LanguageTool (server local): ver [`notes/GUIA_DE_TRABAJO.md`](notes/GUIA_DE_TRABAJO.md) (no se instala desde este repo)
 
 ## Uso con `make`
 
@@ -88,19 +88,19 @@ Notas:
 
 ## Entregables
 
-- `dist/milibro.pdf`: PDF final (actual).
-- `dist/milibro.epub`: EPUB para pruebas/Kindle.
+- [`dist/milibro.pdf`](dist/milibro.pdf): PDF final (actual).
+- [`dist/milibro.epub`](dist/milibro.epub): EPUB para pruebas/Kindle.
 
 ## Licencia
 
-Este proyecto está bajo la licencia MIT. Ver `LICENSE`.
+Este proyecto está bajo la licencia MIT. Ver [`LICENSE`](LICENSE).
 
 ## Documentos
 
-- `docs/ESTRUCTURA.md`: propuesta de estructura para escritura.
-- `docs/PUBLICACION.md`: checklist técnico para publicación (PDF/EPUB).
+- [`docs/ESTRUCTURA.md`](docs/ESTRUCTURA.md): propuesta de estructura para escritura.
+- [`docs/PUBLICACION.md`](docs/PUBLICACION.md): checklist técnico para publicación (PDF/EPUB).
 
 ## Notas y guía de trabajo
 
-- `notes/README.md`: qué guardar en `notes/` (material de trabajo del escritor).
-- `notes/GUIA_DE_TRABAJO.md`: flujo recomendado (terminal), herramientas y checklist diario.
+- [`notes/README.md`](notes/README.md): qué guardar en `notes/` (material de trabajo del escritor).
+- [`notes/GUIA_DE_TRABAJO.md`](notes/GUIA_DE_TRABAJO.md): flujo recomendado (terminal), herramientas y checklist diario.
