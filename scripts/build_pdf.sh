@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-main_tex="${1:-milibro.tex}"
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+# shellcheck source=_common.sh
+source "$script_dir/_common.sh"
+
+cd "$REPO_ROOT"
+
+main_tex="${1:-${MAIN_TEX:-milibro.tex}}"
 build_dir="${BUILD_DIR:-build}"
 dist_dir="${DIST_DIR:-dist}"
 jobname="$(basename "$main_tex" .tex)"
-open_viewer="${OPEN_VIEWER:-1}"
 
 mkdir -p "$build_dir" "$dist_dir"
+
+[[ -f "$main_tex" ]] || die "no existe el archivo: $main_tex"
 
 if command -v latexmk >/dev/null 2>&1; then
   latexmk \
@@ -18,6 +25,7 @@ if command -v latexmk >/dev/null 2>&1; then
     -outdir="$build_dir" \
     "$main_tex"
 else
+  have pdflatex || die "no se encontró 'latexmk' ni 'pdflatex' en PATH (instala TeX Live)."
   pdflatex \
     -interaction=nonstopmode \
     -halt-on-error \
@@ -32,13 +40,8 @@ else
     "$main_tex"
 fi
 
+[[ -f "$build_dir/$jobname.pdf" ]] || die "no se generó el PDF esperado: $build_dir/$jobname.pdf"
 cp -f "$build_dir/$jobname.pdf" "$dist_dir/$jobname.pdf"
 printf 'PDF listo: %s/%s.pdf\n' "$dist_dir" "$jobname"
 
-if [[ "$open_viewer" != "0" ]] && command -v atril >/dev/null 2>&1; then
-  if [[ -n "${DISPLAY:-}" || -n "${WAYLAND_DISPLAY:-}" ]]; then
-    (atril "$dist_dir/$jobname.pdf" >/dev/null 2>&1 &)
-  else
-    printf 'Nota: sin entorno gráfico; abre manualmente con: atril %s/%s.pdf\n' "$dist_dir" "$jobname"
-  fi
-fi
+open_pdf "$dist_dir/$jobname.pdf"

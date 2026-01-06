@@ -36,11 +36,18 @@
 *.html
 *.css
 
+# Python (utilidades)
+__pycache__/
+*.pyc
+
 # Salidas/temporales típicos en raíz (preferimos dist/ y build/)
 /content.opf
 /milibro-epub/
+/milibro-epub3/
 /milibro*.html
+/milibro*.xhtml
 /milibro.css
+/milibro.opf
 /milibro.ncx
 /milibro.dvi
 /milibro.idv

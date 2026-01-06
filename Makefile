@@ -4,8 +4,10 @@ MAIN_TEX := milibro.tex
 BUILD_DIR := build
 DIST_DIR := dist
 SCRIPTS_DIR := scripts
+OPEN_VIEWER ?= 1
+EPUB_FORMAT ?= epub3
 
-.PHONY: all pdf epub dist clean dirs
+.PHONY: all pdf epub dist clean dirs check watch new-chapter
 
 all: pdf
 
@@ -13,12 +15,30 @@ dirs:
 	@mkdir -p "$(BUILD_DIR)" "$(DIST_DIR)"
 
 pdf: dirs
-	@BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" OPEN_VIEWER=1 bash "$(SCRIPTS_DIR)/build_pdf.sh" "$(MAIN_TEX)"
+	@BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" OPEN_VIEWER="$(OPEN_VIEWER)" bash "$(SCRIPTS_DIR)/build_pdf.sh" "$(MAIN_TEX)"
 
 epub: dirs
-	@BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" OPEN_VIEWER=1 bash "$(SCRIPTS_DIR)/build_epub.sh" "$(MAIN_TEX)"
+	@BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" OPEN_VIEWER="$(OPEN_VIEWER)" EPUB_FORMAT="$(EPUB_FORMAT)" bash "$(SCRIPTS_DIR)/build_epub.sh" "$(MAIN_TEX)"
 
 dist: pdf epub
 
+check: dirs
+	@BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" OPEN_VIEWER=0 bash "$(SCRIPTS_DIR)/check.sh" "$(MAIN_TEX)"
+
+watch: dirs
+	@if command -v latexmk >/dev/null 2>&1; then \
+	  latexmk -pdf -pvc -interaction=nonstopmode -halt-on-error -file-line-error -outdir="$(BUILD_DIR)" "$(MAIN_TEX)"; \
+	else \
+	  echo "Error: 'latexmk' es requerido para watch (instala TeX Live/latexmk)."; \
+	  exit 1; \
+	fi
+
 clean:
 	@MAIN_TEX="$(MAIN_TEX)" BUILD_DIR="$(BUILD_DIR)" DIST_DIR="$(DIST_DIR)" bash "$(SCRIPTS_DIR)/clean.sh"
+
+new-chapter:
+	@if [[ -z "$(TITLE)" ]]; then \
+	  echo "Uso: make new-chapter TITLE='Título del capítulo' [SLUG=mi-slug]"; \
+	  exit 1; \
+	fi
+	@bash "$(SCRIPTS_DIR)/new_chapter.sh" "$(TITLE)" "$(SLUG)"

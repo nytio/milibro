@@ -1,38 +1,30 @@
 \documentclass[12pt,oneside,openany]{book}
 
-% Configuración pensada para KDP (tamaño típico 6x9) aunque el entregable actual sea PDF.
-\usepackage[papersize={6in,9in},top=0.75in,bottom=0.75in,inner=0.9in,outer=0.7in]{geometry}
+\input{tex/metadatos}
+\input{tex/preambulo}
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[spanish]{babel}
-
-\usepackage{microtype}
-\usepackage{graphicx}
-
-\usepackage[hidelinks]{hyperref}
-\usepackage{bookmark}
 \hypersetup{
-  pdftitle={Mi libro},
-  pdfauthor={Autor},
-  pdfsubject={Libro},
+  unicode=true,
+  pdftitle={\LibroTitulo},
+  pdfauthor={\LibroAutor},
+  pdfsubject={\LibroAsunto},
+  pdfkeywords={\LibroPalabrasClave},
   pdfcreator={LaTeX},
   pdfproducer={pdfLaTeX}
 }
 
-\title{Mi libro}
-\author{Autor}
-\date{}
+\title{\LibroTitulo}
+\author{\LibroAutor}
+\date{\LibroFecha}
 
 \begin{document}
 
-\frontmatter
-\hypersetup{pageanchor=false}
-\maketitle
-\tableofcontents
-\hypersetup{pageanchor=true}
+\input{tex/frontmatter}
 
 \mainmatter
-\input{tex/capitulo1}
+\input{tex/chapters}
+
+\backmatter
+\input{tex/backmatter}
 
 \end{document}

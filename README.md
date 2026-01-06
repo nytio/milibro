@@ -9,10 +9,13 @@ La guía de trabajo del agente está en `AGENTS.md` y el documento objetivo/base
 - `milibro.tex`: archivo maestro (configurado para tamaño 6x9 y TOC navegable en PDF).
 - `tex/`: contenido del libro por capítulos/secciones.
   - Ejemplo: `tex/capitulo1.tex` (poema en prosa de prueba).
+  - Soporte: `tex/metadatos.tex`, `tex/preambulo.tex`, `tex/frontmatter.tex`, `tex/chapters.tex`, `tex/backmatter.tex`.
 - `img/`: imágenes y recursos gráficos del libro (siempre con rutas relativas, p.ej. `img/figura.png`).
 - `scripts/`: scripts usados por el `Makefile` para compilar/limpiar.
 - `build/`: artefactos de compilación (auxiliares y salidas intermedias).
 - `dist/`: entregables finales (PDF/EPUB generados).
+- `docs/`: documentación operativa (estructura y checklist de publicación).
+- `notes/`: notas de trabajo del escritor (opcional).
 
 ## Recomendaciones para trabajar en `tex/`
 
@@ -41,10 +44,14 @@ Targets:
 - `make pdf`: compila `milibro.tex` y copia el resultado a `dist/milibro.pdf`.
 - `make epub`: genera `dist/milibro.epub` (usa `tex4ebook` si está disponible; si no, intenta `pandoc`).
 - `make dist`: ejecuta `pdf` y `epub`.
+- `make check`: compila y revisa referencias/archivos faltantes (si algo falla, devuelve error).
+- `make watch`: recompila en caliente (requiere `latexmk`).
+- `make new-chapter TITLE="..."`: crea `tex/capituloN.tex` y lo agrega a `tex/chapters.tex`.
 - `make clean`: limpia `build/` y temporales en la raíz (conserva `dist/`).
 
 Variables útiles:
 - `OPEN_VIEWER=0 make pdf` / `OPEN_VIEWER=0 make epub`: desactiva la apertura automática del visor.
+- `EPUB_FORMAT=epub2 make epub` o `EPUB_FORMAT=epub3 make epub`: el formato usado por `tex4ebook` (por defecto `epub3`).
 
 Notas:
 - La compilación genera auxiliares dentro de `build/` para mantener el directorio raíz limpio.
@@ -59,3 +66,7 @@ Notas:
 
 Este proyecto está bajo la licencia MIT. Ver `LICENSE`.
 
+## Documentos
+
+- `docs/ESTRUCTURA.md`: propuesta de estructura para escritura.
+- `docs/PUBLICACION.md`: checklist técnico para publicación (PDF/EPUB).
