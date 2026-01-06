@@ -7,9 +7,31 @@ SCRIPTS_DIR := scripts
 OPEN_VIEWER ?= 1
 EPUB_FORMAT ?= epub3
 
-.PHONY: all pdf epub dist clean dirs check watch new-chapter spellcheck languagetool
+.PHONY: all help doctor pdf epub dist clean dirs check watch new-chapter spellcheck languagetool
 
 all: pdf
+
+help:
+	@printf '%s\n' \
+	  "Uso:" \
+	  "  make pdf                 Compila a dist/milibro.pdf" \
+	  "  make epub                Genera dist/milibro.epub (tex4ebook o pandoc)" \
+	  "  make dist                pdf + epub" \
+	  "  make check               Compila y valida refs/archivos faltantes" \
+	  "  make watch               Recompila en caliente (requiere latexmk)" \
+	  "  make new-chapter TITLE=  Crea tex/capituloN.tex y lo incluye" \
+	  "  make spellcheck          Revisión ortográfica (aspell/hunspell)" \
+	  "  make languagetool        Revisión de estilo (LanguageTool local)" \
+	  "  make clean               Limpia build/ y auxiliares" \
+	  "  make doctor              Verifica herramientas en PATH" \
+	  "" \
+	  "Variables útiles:" \
+	  "  OPEN_VIEWER=0            No abrir visor (PDF/EPUB)" \
+	  "  EPUB_FORMAT=epub2|epub3  Formato para tex4ebook" \
+	  "  FILES=\"...\"              Limita archivos (spellcheck/languagetool)"
+
+doctor:
+	@bash "$(SCRIPTS_DIR)/doctor.sh"
 
 dirs:
 	@mkdir -p "$(BUILD_DIR)" "$(DIST_DIR)"

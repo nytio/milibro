@@ -4,6 +4,19 @@ Proyecto para escribir un libro en **LaTeX** en **Ubuntu desde la terminal**, ge
 
 La guía de trabajo del agente está en [`AGENTS.md`](AGENTS.md) y el documento objetivo/base está en [`Escribir un libro con LaTeX en Ubuntu desde la terminal.pdf`](Escribir%20un%20libro%20con%20LaTeX%20en%20Ubuntu%20desde%20la%20terminal.pdf).
 
+## Inicio rápido
+
+1) Compilar PDF:
+   - `make pdf`
+2) Generar EPUB:
+   - `make epub`
+3) Crear un capítulo:
+   - `make new-chapter TITLE="Título del capítulo" SLUG="mi-slug"`
+
+Atajos útiles:
+- Verifica herramientas instaladas: `make doctor`
+- Lista de comandos: `make help`
+
 ## Estructura del repositorio
 
 - [`milibro.tex`](milibro.tex): archivo maestro (configurado para tamaño 6x9 y TOC navegable en PDF).
@@ -11,7 +24,7 @@ La guía de trabajo del agente está en [`AGENTS.md`](AGENTS.md) y el documento 
   - Ejemplo: [`tex/capitulo1.tex`](tex/capitulo1.tex) (poema en prosa de prueba).
   - Soporte: [`tex/metadatos.tex`](tex/metadatos.tex), [`tex/preambulo.tex`](tex/preambulo.tex), [`tex/frontmatter.tex`](tex/frontmatter.tex), [`tex/chapters.tex`](tex/chapters.tex), [`tex/backmatter.tex`](tex/backmatter.tex).
 - [`img/`](img/): imágenes y recursos gráficos del libro (siempre con rutas relativas, p.ej. `img/figura.png`).
-  - Portada: [`img/portada.jpg`](img/portada.jpg) (ver [`img/README.md`](img/README.md)).
+  - Portada: coloca `img/portada.jpg|png|pdf` (ver [`img/README.md`](img/README.md)).
 - [`scripts/`](scripts/): scripts usados por el [`Makefile`](Makefile) para compilar/limpiar y utilidades de revisión de texto.
 - [`build/`](build/): artefactos de compilación (auxiliares y salidas intermedias).
 - [`dist/`](dist/): entregables finales (PDF/EPUB generados).
@@ -61,10 +74,12 @@ Nota: estos comandos son solo referencia; instala lo que necesites según tu sis
 ## Uso con `make`
 
 Targets:
+- `make help`: muestra un resumen de targets y variables.
 - `make pdf`: compila `milibro.tex` y copia el resultado a `dist/milibro.pdf`.
 - `make epub`: genera `dist/milibro.epub` (usa `tex4ebook` si está disponible; si no, intenta `pandoc`).
 - `make dist`: ejecuta `pdf` y `epub`.
 - `make check`: compila y revisa referencias/archivos faltantes (si algo falla, devuelve error).
+- `make doctor`: verifica que tienes herramientas mínimas en `PATH` (sin instalar nada).
 - `make watch`: recompila en caliente (requiere `latexmk`).
 - `make new-chapter TITLE="..."`: crea `tex/capituloN.tex` y lo agrega a `tex/chapters.tex`.
 - `make spellcheck`: lista palabras sospechosas (por defecto revisa `tex/capitulo*.tex` y `tex/backmatter.tex`).
@@ -88,8 +103,13 @@ Notas:
 
 ## Entregables
 
-- [`dist/milibro.pdf`](dist/milibro.pdf): PDF final (actual).
-- [`dist/milibro.epub`](dist/milibro.epub): EPUB para pruebas/Kindle.
+- Se generan en `dist/` al ejecutar `make pdf` / `make epub`.
+- Archivos típicos: `dist/milibro.pdf`, `dist/milibro.epub`.
+
+## Guías rápidas
+
+- [`docs/INICIO_RAPIDO.md`](docs/INICIO_RAPIDO.md): el “camino feliz” para empezar.
+- [`docs/RECETAS_LATEX.md`](docs/RECETAS_LATEX.md): ejemplos cortos (capítulos, referencias, imágenes, notas).
 
 ## Licencia
 

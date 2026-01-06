@@ -23,3 +23,7 @@ Si quieres separar material de trabajo sin mezclarlo con el libro:
 
 - `notes/`: esquemas, lista de pendientes, personajes, cronología, glosario, etc. (texto plano/Markdown).
 
+## Para empezar rápido
+
+- `docs/INICIO_RAPIDO.md`: pasos mínimos para compilar y empezar a escribir.
+- `docs/RECETAS_LATEX.md`: ejemplos cortos de LaTeX (referencias, imágenes, notas).
