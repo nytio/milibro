@@ -69,6 +69,11 @@ if command -v pandoc >/dev/null 2>&1; then
   fi
 
   pandoc_args=(-s --toc --from=latex --resource-path=.:img:tex -o "$dist_dir/$jobname.epub")
+  cover_img=""
+  for c in img/portada.jpg img/portada.jpeg img/portada.png; do
+    [[ -f "$c" ]] && cover_img="$c" && break
+  done
+  [[ -n "$cover_img" ]] && pandoc_args+=(--epub-cover-image="$cover_img")
   [[ -f metadata.yaml ]] && pandoc_args+=(--metadata-file=metadata.yaml)
   pandoc "${pandoc_args[@]}" "$flattened_tex"
   printf 'EPUB listo: %s/%s.epub\n' "$dist_dir" "$jobname"

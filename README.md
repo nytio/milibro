@@ -11,6 +11,7 @@ La guía de trabajo del agente está en `AGENTS.md` y el documento objetivo/base
   - Ejemplo: `tex/capitulo1.tex` (poema en prosa de prueba).
   - Soporte: `tex/metadatos.tex`, `tex/preambulo.tex`, `tex/frontmatter.tex`, `tex/chapters.tex`, `tex/backmatter.tex`.
 - `img/`: imágenes y recursos gráficos del libro (siempre con rutas relativas, p.ej. `img/figura.png`).
+  - Portada: `img/portada.jpg` (ver `img/README.md`).
 - `scripts/`: scripts usados por el `Makefile` para compilar/limpiar.
 - `build/`: artefactos de compilación (auxiliares y salidas intermedias).
 - `dist/`: entregables finales (PDF/EPUB generados).

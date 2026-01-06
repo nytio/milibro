@@ -1,17 +1,90 @@
 \frontmatter
 \hypersetup{pageanchor=false}
 
-\maketitle
+% Portada con imagen (opcional). Coloca tu archivo en:
+% - img/portada.jpg (recomendado) o img/portada.png o img/portada.pdf
+% - o define \LibroPortadaArchivo en tex/metadatos.tex (ruta relativa).
+\begingroup
+\def\PortadaPath{}
+\def\TryPortadaDefaults{%
+  \IfFileExists{img/portada.jpg}{\def\PortadaPath{img/portada.jpg}}{%
+    \IfFileExists{img/portada.png}{\def\PortadaPath{img/portada.png}}{%
+      \IfFileExists{img/portada.pdf}{\def\PortadaPath{img/portada.pdf}}{}%
+    }%
+  }%
+}
+\milibroIfBlankTF{\LibroPortadaArchivo}{%
+  \TryPortadaDefaults
+}{%
+  \IfFileExists{\LibroPortadaArchivo}{\def\PortadaPath{\LibroPortadaArchivo}}{\TryPortadaDefaults}%
+}
+
+\milibroIfBlankTF{\PortadaPath}{}{%
+  \pdfbookmark[0]{Portada}{cover}
+  \newgeometry{margin=0in}
+  \thispagestyle{empty}
+  \begin{center}
+  \vspace*{\fill}
+  \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\PortadaPath}
+  \vspace*{\fill}
+  \end{center}
+  \clearpage
+  \restoregeometry
+}
+\endgroup
+
+% Portadilla (típica en libros publicados).
+\pdfbookmark[0]{Portadilla}{title}
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+\vspace*{0.18\textheight}
+{\Huge\bfseries \LibroTitulo\par}
+\milibroIfBlankTF{\LibroSubtitulo}{}{%
+  \vspace{0.8em}
+  {\Large \LibroSubtitulo\par}
+}
+\vspace{2.5em}
+{\Large \LibroAutor\par}
+\milibroIfBlankTF{\LibroEditorial}{}{%
+  \vfill
+  {\large \LibroEditorial\par}
+}
+\end{titlepage}
 \cleardoublepage
 
 \thispagestyle{empty}
-\vspace*{\fill}
-\noindent \copyright\ \LibroAutor.
+\small
+\noindent \copyright\ \LibroCopyrightAnio\ \LibroAutor.
 
-\noindent Todos los derechos reservados.
-\vspace*{\fill}
+\milibroIfBlankTF{\LibroDerechos}{}{%
+  \par\noindent \LibroDerechos
+}
+
+\milibroIfBlankTF{\LibroEdicion}{}{%
+  \par\noindent \LibroEdicion
+}
+
+\milibroIfBlankTF{\LibroISBNImpreso}{}{%
+  \par\noindent ISBN (tapa blanda): \LibroISBNImpreso
+}
+
+\milibroIfBlankTF{\LibroISBNEbook}{}{%
+  \par\noindent ISBN (eBook): \LibroISBNEbook
+}
+
+\milibroIfBlankTF{\LibroSitioWeb}{}{%
+  \par\noindent \LibroSitioWeb
+}
+
+\milibroIfBlankTF{\LibroCorreo}{}{%
+  \par\noindent \LibroCorreo
+}
+\normalsize
+
 \cleardoublepage
 
+\pdfbookmark[0]{Contenido}{toc}
 \tableofcontents
 \cleardoublepage
 

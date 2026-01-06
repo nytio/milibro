@@ -12,3 +12,22 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{bookmark}
 
+% Ajustes típicos para libro (KDP/impresión): sangría, sin espacio extra entre párrafos.
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0pt}
+\raggedbottom
+
+% TOC más “amigable” para eBook.
+\renewcommand{\contentsname}{Contenido}
+\setcounter{tocdepth}{2}
+
+% Utilidad: comprobar si un campo está vacío (robusto con \newcommand).
+\newcommand{\milibroIfBlankTF}[3]{%
+  \begingroup
+  \edef\milibroTmp{#1}%
+  \if\relax\detokenize\expandafter{\milibroTmp}\relax
+    \endgroup #2%
+  \else
+    \endgroup #3%
+  \fi
+}

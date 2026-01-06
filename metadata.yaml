@@ -1,7 +1,10 @@
 ---
 title: "Mi libro"
+subtitle: ""
 author: "Autor"
 language: "es"
 subject: "Libro"
 keywords: []
+publisher: ""
+rights: "© 2026 Autor. Todos los derechos reservados."
 ...
