@@ -1,7 +1,8 @@
 \documentclass[12pt,oneside,openany]{book}
 
-\input{tex/metadatos}
-\input{tex/preambulo}
+\providecommand{\LibroTexDir}{tex}
+\input{\LibroTexDir/metadatos}
+\input{\LibroTexDir/preambulo}
 
 \hypersetup{
   unicode=true,
@@ -22,12 +23,12 @@
 
 \begin{document}
 
-\input{tex/frontmatter}
+\input{\LibroTexDir/frontmatter}
 
 \mainmatter
-\input{tex/chapters}
+\input{\LibroTexDir/chapters}
 
 \backmatter
-\input{tex/backmatter}
+\input{\LibroTexDir/backmatter}
 
 \end{document}

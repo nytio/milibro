@@ -15,7 +15,7 @@ Una afirmación.\footnote{Autor, \emph{Título}, Editorial, Año.}
 
 ### A.2 `thebibliography` (manual)
 
-En `tex/backmatter.tex` (o en un archivo aparte) puedes añadir:
+En `backmatter.tex` (dentro del libro, p.ej. `tex/books/<libro>/backmatter.tex`) puedes añadir:
 
 ```tex
 \chapter*{Bibliografía}
@@ -37,15 +37,15 @@ Limitación: tienes que mantener la lista “a mano”.
 
 ### 1) Activar bibliografía
 
-Edita `tex/metadatos.tex`:
+Edita `metadatos.tex` dentro del libro (p.ej. `tex/books/<libro>/metadatos.tex`):
 
 ```tex
 \newcommand{\LibroUsarBibliografia}{1}
 ```
 
-### 2) Crear `tex/referencias.bib`
+### 2) Crear `referencias.bib`
 
-Este repo ya espera ese nombre. Ejemplo:
+Este repo espera `referencias.bib` dentro del libro (p.ej. `tex/books/<libro>/referencias.bib`). Ejemplo:
 
 ```bibtex
 @book{borges1944,
@@ -72,11 +72,11 @@ Como observa \textcite{borges1944}, ...
 
 ### 4) Compilar
 
-- Recomendado: `make pdf` (usa `latexmk` si está disponible).
+- Recomendado: `make pdf BOOK=<libro>` (usa `latexmk` si está disponible).
 - Si compilas a mano: `pdflatex → biber → pdflatex → pdflatex`.
 
 ## Notas para EPUB/Kindle
 
 - Si tu EPUB lo genera `tex4ebook`, `biblatex` suele conservarse mejor (en general, cuanto más “semántico” sea el LaTeX, mejor).
-- Si tu EPUB lo genera `pandoc` (fallback), el script añade `--citeproc` automáticamente si existe `tex/referencias.bib`.
+- Si tu EPUB lo genera `pandoc` (fallback), el script añade `--citeproc` automáticamente si existe `referencias.bib` dentro del libro.
   - Para máxima compatibilidad, usa citas simples tipo `\cite{...}` (pandoc no siempre entiende comandos específicos como `\autocite`).

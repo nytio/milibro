@@ -4,19 +4,20 @@ El repositorio está pensado para escribir y publicar desde la terminal, separan
 
 ## Carpeta y archivos clave
 
-- `milibro.tex`: archivo maestro (punto único de entrada).
-- `tex/`: contenido del libro (capítulos y auxiliares de LaTeX).
-  - `tex/metadatos.tex`: título/autor y metadatos básicos (PDF/EPUB).
-  - `tex/preambulo.tex`: paquetes y configuración base (español, tipografía, imágenes).
-  - `tex/frontmatter.tex`: portada, página legal y tabla de contenidos.
-  - `tex/chapters.tex`: lista de capítulos incluidos (se edita al añadir capítulos).
-  - `tex/capituloN.tex`: capítulos.
-  - `tex/backmatter.tex`: secciones finales (p.ej., “Sobre el autor”).
-  - (Opcional) `tex/referencias.bib`: bibliografía en formato BibTeX (si activas biblatex).
-- `img/`: imágenes (rutas siempre relativas).
+- `tex/milibro.tex`: archivo maestro (punto único de entrada).
+- `tex/`: plantillas base para iniciar un libro.
+- `tex/books/<libro>/`: contenido del libro (cada subcarpeta es un libro independiente; se ignora en git).
+  - `tex/books/<libro>/metadatos.tex`: título/autor y metadatos básicos (PDF/EPUB).
+  - `tex/books/<libro>/preambulo.tex`: paquetes y configuración base (español, tipografía, imágenes).
+  - `tex/books/<libro>/frontmatter.tex`: portada, página legal y tabla de contenidos.
+  - `tex/books/<libro>/chapters.tex`: lista de capítulos incluidos (se edita al añadir capítulos).
+  - `tex/books/<libro>/capituloN.tex`: capítulos.
+  - `tex/books/<libro>/backmatter.tex`: secciones finales (p.ej., “Sobre el autor”).
+  - (Opcional) `tex/books/<libro>/referencias.bib`: bibliografía en formato BibTeX (si activas biblatex).
+- `img/`: imágenes compartidas (rutas siempre relativas; el contenido se ignora por defecto).
 - `scripts/`: compilación, conversión y utilidades.
-- `build/`: artefactos de compilación (aux/log/pdf intermedio).
-- `dist/`: entregables finales listos para subir (PDF/EPUB).
+- `build/`: artefactos de compilación (aux/log/pdf intermedio; p.ej. `build/<libro>/`).
+- `dist/`: entregables finales listos para subir (PDF/EPUB; p.ej. `dist/<libro>.pdf`).
 
 ## Carpeta opcional para el escritor
 

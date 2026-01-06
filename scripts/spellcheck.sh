@@ -9,19 +9,26 @@ cd "$REPO_ROOT"
 
 mode="list"
 lang="${SPELL_LANG:-es}"
+books_dir="${BOOKS_DIR:-tex/books}"
+book="${BOOK:-}"
+book_dir="${BOOK_DIR:-}"
 
 usage() {
   cat <<'EOF' >&2
 Uso:
-  scripts/spellcheck.sh [--list|--check] [archivos...]
+  scripts/spellcheck.sh [opciones] [archivos...]
 
 Por defecto revisa:
-  tex/capitulo*.tex tex/backmatter.tex
+  - sin BOOK: tex/capitulo*.tex tex/backmatter.tex
+  - con BOOK: tex/books/BOOK/capitulo*.tex tex/books/BOOK/backmatter.tex
 
 Variables:
   SPELL_LANG=es          Idioma (aspell/hunspell)
   ASPELL_PERSONAL=...    Diccionario personal (por defecto: notes/aspell.es.pws si existe)
   SPELL_FILTER_NOISE=1   Filtra ruido típico (números romanos, etc.)
+  BOOK=...               Selecciona libro (tex/books/BOOK)
+  BOOK_DIR=...            Selecciona libro (directorio)
+  BOOKS_DIR=...           Base de libros (default: tex/books)
 
 Ejemplos:
   scripts/spellcheck.sh --list
@@ -35,6 +42,9 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --list) mode="list"; shift ;;
     --check) mode="check"; shift ;;
+    --book) book="${2:-}"; shift 2 ;;
+    --book-dir) book_dir="${2:-}"; shift 2 ;;
+    --books-dir) books_dir="${2:-}"; shift 2 ;;
     -h|--help) usage; exit 2 ;;
     --) shift; break ;;
     -*) die "opción desconocida: $1" ;;
@@ -42,13 +52,20 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+tex_dir="tex"
+if [[ -n "$book_dir" ]]; then
+  tex_dir="$book_dir"
+elif [[ -n "$book" ]]; then
+  tex_dir="$books_dir/$book"
+fi
+
 if [[ ${#files[@]} -eq 0 ]]; then
   if [[ -n "${FILES:-}" ]]; then
     # shellcheck disable=SC2206
     files=($FILES)
   else
     shopt -s nullglob
-    files=(tex/capitulo*.tex tex/backmatter.tex)
+    files=("$tex_dir"/capitulo*.tex "$tex_dir"/backmatter.tex)
   fi
 fi
 

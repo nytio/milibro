@@ -4,6 +4,21 @@
 /dist/*
 !/dist/.gitkeep
 
+# Libros en edición (privados)
+/tex/books/*
+!/tex/books/.gitkeep
+!/tex/books/README.md
+
+# Imágenes compartidas (no publicar contenido)
+/img/*
+!/img/.gitkeep
+!/img/README.md
+
+# Notas compartidas (no publicar contenido)
+/notes/*
+!/notes/README.md
+!/notes/GUIA_DE_TRABAJO.md
+
 # Auxiliares LaTeX (por si se ejecuta sin outdir)
 *.aux
 *.log

@@ -6,12 +6,14 @@ La guía de trabajo del agente está en [`AGENTS.md`](AGENTS.md) y el documento 
 
 ## Inicio rápido
 
-1) Compilar PDF:
-   - `make pdf`
-2) Generar EPUB:
-   - `make epub`
-3) Crear un capítulo:
-   - `make new-chapter TITLE="Título del capítulo" SLUG="mi-slug"`
+1) Crear un libro en edición (privado, ignorado por git):
+   - `make new-book BOOK=mi-libro`
+2) Compilar PDF:
+   - `make pdf BOOK=mi-libro`
+3) Generar EPUB:
+   - `make epub BOOK=mi-libro`
+4) Crear un capítulo:
+   - `make new-chapter BOOK=mi-libro TITLE="Título del capítulo" SLUG="mi-slug"`
 
 Atajos útiles:
 - Verifica herramientas instaladas: `make doctor`
@@ -19,22 +21,21 @@ Atajos útiles:
 
 ## Estructura del repositorio
 
-- [`milibro.tex`](milibro.tex): archivo maestro (configurado para tamaño 6x9 y TOC navegable en PDF).
-- [`tex/`](tex/): contenido del libro por capítulos/secciones.
-  - Ejemplo: [`tex/capitulo1.tex`](tex/capitulo1.tex) (poema en prosa de prueba).
-  - Soporte: [`tex/metadatos.tex`](tex/metadatos.tex), [`tex/preambulo.tex`](tex/preambulo.tex), [`tex/frontmatter.tex`](tex/frontmatter.tex), [`tex/chapters.tex`](tex/chapters.tex), [`tex/backmatter.tex`](tex/backmatter.tex).
-- [`img/`](img/): imágenes y recursos gráficos del libro (siempre con rutas relativas, p.ej. `img/figura.png`).
+- [`tex/milibro.tex`](tex/milibro.tex): archivo maestro (configurado para tamaño 6x9 y TOC navegable en PDF).
+- [`tex/`](tex/): plantillas para iniciar un libro (públicas).
+- [`tex/books/`](tex/books/): libros en edición (privados, cada subcarpeta es un libro independiente; se ignora en `.gitignore`).
+- [`img/`](img/): imágenes y recursos gráficos compartidos (esta carpeta se mantiene, pero su contenido se ignora por defecto).
   - Portada: coloca `img/portada.jpg|png|pdf` (ver [`img/README.md`](img/README.md)).
 - [`scripts/`](scripts/): scripts usados por el [`Makefile`](Makefile) para compilar/limpiar y utilidades de revisión de texto.
 - [`build/`](build/): artefactos de compilación (auxiliares y salidas intermedias).
 - [`dist/`](dist/): entregables finales (PDF/EPUB generados).
 - [`docs/`](docs/): documentación operativa (estructura y checklist de publicación).
-- [`notes/`](notes/): notas de trabajo del escritor (opcional).
+- [`notes/`](notes/): notas compartidas (la carpeta se mantiene, pero su contenido se ignora por defecto).
 
 ## Recomendaciones para trabajar en `tex/`
 
-- Mantén cada capítulo en un archivo separado (`tex/capituloN.tex`) y no repitas preámbulo: solo contenido.
-- Para libros largos, `tex/chapters.tex` usa `\milibroChapter{...}` (permite compilar solo capítulos específicos con `INCLUDEONLY=...`).
+- Mantén cada capítulo en un archivo separado dentro del libro (p.ej. `tex/books/mi-libro/capituloN.tex`) y no repitas preámbulo: solo contenido.
+- Para libros largos, `chapters.tex` usa `\milibroChapter{...}` (permite compilar solo capítulos específicos con `INCLUDEONLY=...`).
 - Usa etiquetas estables para referencias:
   - `\label{chap:...}` para capítulos, `\label{sec:...}` para secciones, `\label{fig:...}` para figuras.
 - Evita rutas absolutas y recursos fuera del repo (rompe compilación/EPUB). Todo debe vivir en `img/` u otra carpeta del proyecto.
@@ -42,11 +43,11 @@ Atajos útiles:
 
 ## Funciones avanzadas (opcionales)
 
-Todas se activan editando `tex/metadatos.tex`:
+Todas se activan editando `metadatos.tex` dentro del libro seleccionado:
 
 - Lista de figuras: `\LibroMostrarListaFiguras` (`0/1`).
 - Lista de tablas: `\LibroMostrarListaTablas` (`0/1`).
-- Bibliografía con `.bib` (biblatex+biber): `\LibroUsarBibliografia` (`0/1`) y `tex/referencias.bib`.
+- Bibliografía con `.bib` (biblatex+biber): `\LibroUsarBibliografia` (`0/1`) y `referencias.bib`.
 - Índice analítico: `\LibroUsarIndiceAnalitico` (`0/1`) y marcas en el texto con `\index{...}`.
 
 Requiere:
@@ -67,7 +68,7 @@ Compilación a PDF:
 
 EPUB:
 - Preferente: `tex4ebook`.
-- Alternativa/fallback: `pandoc` (usa `metadata.yaml` si existe y `img/portada.jpg|png` como cover cuando aplica).
+- Alternativa/fallback: `pandoc` (usa `tex/books/<libro>/metadata.yaml` si existe; si no, `tex/metadata.yaml` como plantilla; y `img/portada.jpg|png` como cover cuando aplica).
 - Recomendado: `tidy` (o `tidy-html5`) para reducir warnings cuando se usa `tex4ebook`.
 
 Revisión de ortografía/redacción (opcional pero recomendado):
@@ -93,14 +94,15 @@ Nota: estos comandos son solo referencia; instala lo que necesites según tu sis
 
 Targets:
 - `make help`: muestra un resumen de targets y variables.
-- `make pdf`: compila `milibro.tex` y copia el resultado a `dist/milibro.pdf`.
-- `make epub`: genera `dist/milibro.epub` (usa `tex4ebook` si está disponible; si no, intenta `pandoc`).
+- `make pdf`: compila el libro seleccionado por `BOOK` (si no hay `BOOK`, compila las plantillas en `tex/`).
+- `make epub`: genera el EPUB del libro seleccionado por `BOOK` (preferente `tex4ebook`; fallback `pandoc`).
 - `make dist`: ejecuta `pdf` y `epub`.
 - `make check`: compila y revisa referencias/archivos faltantes (si algo falla, devuelve error).
 - `make doctor`: verifica que tienes herramientas mínimas en `PATH` (sin instalar nada).
 - `make watch`: recompila en caliente (requiere `latexmk`).
-- `make new-chapter TITLE="..."`: crea `tex/capituloN.tex` y lo agrega a `tex/chapters.tex`.
-- `make spellcheck`: lista palabras sospechosas (por defecto revisa `tex/capitulo*.tex` y `tex/backmatter.tex`).
+- `make new-book BOOK=...`: crea `tex/books/BOOK/` copiando plantillas desde `tex/`.
+- `make new-chapter TITLE="..."`: crea `capituloN.tex` en el libro seleccionado y lo agrega a `chapters.tex`.
+- `make spellcheck`: lista palabras sospechosas (por defecto revisa el libro seleccionado).
 - `make languagetool`: revisión de redacción/estilo vía LanguageTool local (API).
 - `make clean`: limpia `build/` y temporales en la raíz (conserva `dist/`).
 
@@ -108,7 +110,8 @@ Variables útiles:
 - `OPEN_VIEWER=0 make pdf` / `OPEN_VIEWER=0 make epub`: desactiva la apertura automática del visor.
 - `EPUB_FORMAT=epub2 make epub` o `EPUB_FORMAT=epub3 make epub`: el formato usado por `tex4ebook` (por defecto `epub3`).
 - `INCLUDEONLY=capitulo3 make pdf`: compila solo ese capítulo (o varios separados por coma: `capitulo2,capitulo3`).
-- `FILES="tex/capitulo1.tex tex/backmatter.tex" make spellcheck`: limita archivos a revisar.
+- `BOOK=mi-libro make pdf`: selecciona el libro (carpeta `tex/books/mi-libro/`).
+- `FILES="tex/books/mi-libro/capitulo1.tex tex/books/mi-libro/backmatter.tex" make spellcheck`: limita archivos a revisar.
 - `SPELL_LANG=es make spellcheck`: idioma del corrector (aspell/hunspell).
 - `ASPELL_PERSONAL=notes/aspell.es.pws make spellcheck`: diccionario personal del proyecto (si aplica).
 - `LT_LEVEL=picky make languagetool`: modo más estricto (LanguageTool).
@@ -123,7 +126,7 @@ Notas:
 ## Entregables
 
 - Se generan en `dist/` al ejecutar `make pdf` / `make epub`.
-- Archivos típicos: `dist/milibro.pdf`, `dist/milibro.epub`.
+- Archivos típicos: `dist/mi-libro.pdf`, `dist/mi-libro.epub` (cuando usas `BOOK=mi-libro`).
 
 ## Guías rápidas
 

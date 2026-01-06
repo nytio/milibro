@@ -1,6 +1,6 @@
 # Recetas LaTeX (rápidas y “compatibles con eBook”)
 
-Estas recetas asumen el estilo del repo: capítulos en `tex/`, imágenes en `img/`, y etiquetas estables con prefijos `chap:`, `sec:`, `fig:`.
+Estas recetas asumen el estilo del repo: capítulos dentro de `tex/books/<libro>/`, imágenes en `img/`, y etiquetas estables con prefijos `chap:`, `sec:`, `fig:`.
 
 ## Capítulo + etiqueta
 
@@ -37,11 +37,11 @@ Ver la figura~\ref{fig:figura-ejemplo}.
 ```
 
 Notas:
-- `tex/preambulo.tex` ya incluye `graphicx` y `\graphicspath{{img/}}`, por eso puedes referenciar `figura.png` sin prefijar `img/`.
+- `preambulo.tex` (dentro del libro) ya incluye `graphicx` y `\graphicspath{{img/}}`, por eso puedes referenciar `figura.png` sin prefijar `img/`.
 - Evita rutas absolutas: rompen compilación/EPUB.
 
 Para generar la “lista de figuras” en el frontmatter:
-- Edita `tex/metadatos.tex` y pon `\newcommand{\LibroMostrarListaFiguras}{1}`.
+- Edita `metadatos.tex` dentro del libro y pon `\newcommand{\LibroMostrarListaFiguras}{1}`.
 
 ## Nota al pie (sin bibliografía)
 
@@ -67,7 +67,7 @@ Ver la tabla~\ref{tab:estado-capitulos}.
 ```
 
 Para generar la “lista de tablas” en el frontmatter:
-- Edita `tex/metadatos.tex` y pon `\newcommand{\LibroMostrarListaTablas}{1}`.
+- Edita `metadatos.tex` dentro del libro y pon `\newcommand{\LibroMostrarListaTablas}{1}`.
 
 ## Bibliografía (citas) con `.bib`
 

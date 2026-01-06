@@ -15,7 +15,7 @@ Este repositorio tiene como finalidad materializar el flujo descrito en `Escribi
 Cuando el usuario pida “seguir el documento” o “hacer el proyecto”, toma este PDF como fuente de verdad:
 - Instalación: TeX Live (preferente `texlive-full`) y visor PDF (Evince/Okular).
 - Edición: archivos de texto plano `.tex` en editor de terminal (p.ej. nano).
-- Estructura: carpeta de proyecto con subcarpetas `tex/` (capítulos) e `img/` (imágenes) y un maestro `milibro.tex`.
+- Estructura: `tex/` (plantillas), `tex/books/<libro>/` (libros en edición), `img/` (imágenes compartidas) y un maestro `tex/milibro.tex`.
 - Contenido: `\chapter`, `\section`, `\tableofcontents`, `\label`/`\ref`, `graphicx` para imágenes; notas con `\footnote` si no hay bibliografía.
 - Compilación PDF: `pdflatex` (mínimo 2 pasadas) o `latexmk -pdf` para automatizar.
 - EPUB: opción 1 `pandoc`; opción 2 `tex4ebook` (preferible si hay elementos complejos).
@@ -24,8 +24,9 @@ Cuando el usuario pida “seguir el documento” o “hacer el proyecto”, toma
 ## Convenciones del proyecto (qué debe crear/modificar Codex)
 
 Si el repo aún no tiene estructura LaTeX, propón (y luego aplica) esta estructura mínima:
-- `milibro.tex` (archivo maestro).
-- `tex/` (capítulos: `capitulo1.tex`, `capitulo2.tex`, …).
+- `tex/milibro.tex` (archivo maestro).
+- `tex/` (plantillas base).
+- `tex/books/` (libros en edición; ignorados por git).
 - `img/` (recursos gráficos referenciados con rutas relativas).
 - Opcional: `build/` para artefactos (`latexmk -outdir=build`) y `dist/` para entregables finales.
 
@@ -43,11 +44,11 @@ Reglas:
 
 ### Edición
 - Edita `.tex` con herramientas CLI (nano/vim/emacs) según preferencia del usuario.
-- Al crear capítulos, dividir por archivos y ensamblar en `milibro.tex` con `\include{tex/capitulo1}` (o `\input` si conviene insertar sin saltos).
+- Al crear capítulos, dividir por archivos dentro de `tex/books/<libro>/` y ensamblar con `chapters.tex` usando `\milibroChapter{capituloN}`.
 
 ### Compilación a PDF
-- Preferido (automático): `latexmk -pdf milibro.tex`.
-- Alternativa (manual): `pdflatex milibro.tex` dos veces.
+- Preferido (automático): `make pdf BOOK=<libro>` (usa `latexmk` si existe).
+- Alternativa (manual): `pdflatex tex/milibro.tex` dos veces (para un libro: compilar vía scripts/Makefile con `BOOK=<libro>`).
 - Para diagnósticos, usar opciones que mejoren errores: `-file-line-error -halt-on-error`.
 
 Si se agregan índices (`makeidx`) o bibliografía (BibTeX/Biber), actualizar el flujo de compilación (latexmk suele manejarlo).
@@ -56,8 +57,8 @@ Si se agregan índices (`makeidx`) o bibliografía (BibTeX/Biber), actualizar el
 Mantener el LaTeX “semántico” y simple para eBooks (evitar posicionamiento absoluto y espaciados forzados).
 
 Opciones:
-- `pandoc -s -o milibro.epub milibro.tex` (añadir `--toc` si se requiere TOC explícito).
-- `tex4ebook milibro.tex` (tiende a preservar más características; genera temporales adicionales).
+- `pandoc -s -o <libro>.epub tex/milibro.tex` (normalmente vía `make epub BOOK=<libro>`).
+- `tex4ebook tex/milibro.tex` (normalmente vía `make epub BOOK=<libro>`).
 
 Después de generar EPUB:
 - Probar en un lector (p.ej. FBReader) o en el previewer de KDP/Kindle fuera del repo.
@@ -87,9 +88,8 @@ En este entorno, el acceso de red puede estar restringido y ciertos comandos req
 
 ## Cómo debe actuar Codex ante tareas típicas
 
-- “Crea el esqueleto del libro”: generar estructura (`milibro.tex`, `tex/`, `img/`) + un capítulo de ejemplo, TOC y paquetes base.
-- “Añade un capítulo”: crear `tex/capituloN.tex`, incluirlo en `milibro.tex`, añadir `\label{chap:...}`.
+- “Crea el esqueleto del libro”: generar estructura (`tex/milibro.tex`, `tex/`, `tex/books/`, `img/`) + un capítulo de ejemplo, TOC y paquetes base.
+- “Añade un capítulo”: crear `tex/books/<libro>/capituloN.tex`, incluirlo en `tex/books/<libro>/chapters.tex`, añadir `\label{chap:...}`.
 - “Inserta una imagen”: ubicar archivo en `img/`, incluir con `graphicx`, `figure`, `\caption` y `\label`.
 - “Referenciar secciones/figuras”: usar `\label` justo tras el título o tras `\caption`, y `\ref` en el texto.
 - “Generar PDF/EPUB”: usar `latexmk`/`pdflatex` y `tex4ebook`/`pandoc` según lo acordado; registrar errores relevantes del log y proponer correcciones.
-

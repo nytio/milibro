@@ -1,6 +1,6 @@
 # Inicio rápido (usuario nuevo)
 
-Objetivo: escribir en `tex/`, compilar a `dist/milibro.pdf` y (si lo necesitas) generar `dist/milibro.epub`, todo desde terminal.
+Objetivo: crear un libro en `tex/books/<libro>/`, compilar a `dist/<libro>.pdf` y (si lo necesitas) generar `dist/<libro>.epub`, todo desde terminal.
 
 ## 1) Comprobar herramientas (sin instalar nada)
 
@@ -10,32 +10,35 @@ Si falta algo, revisa la sección **Requisitos** de `README.md` (incluye comando
 
 ## 2) Dónde editar
 
-- Metadatos (título/autor/portada opcional): `tex/metadatos.tex`
-- Capítulos: `tex/capituloN.tex`
-- Lista de capítulos incluidos: `tex/chapters.tex`
+- Metadatos (título/autor/portada opcional): `tex/books/<libro>/metadatos.tex`
+- Capítulos: `tex/books/<libro>/capituloN.tex`
+- Lista de capítulos incluidos: `tex/books/<libro>/chapters.tex`
 - Imágenes: `img/` (siempre rutas relativas)
 
 ## 3) Crear tu primer capítulo
 
-- `make new-chapter TITLE="Mi primer capítulo" SLUG="mi-primer-capitulo"`
+- 1) Crea el libro:
+  - `make new-book BOOK=mi-libro`
+- 2) Crea el capítulo:
+  - `make new-chapter BOOK=mi-libro TITLE="Mi primer capítulo" SLUG="mi-primer-capitulo"`
 
-Esto crea `tex/capituloN.tex` y lo añade a `tex/chapters.tex`.
+Esto crea `tex/books/mi-libro/capituloN.tex` y lo añade a `tex/books/mi-libro/chapters.tex`.
 
 ## 4) Compilar PDF
 
-- `make pdf`
+- `make pdf BOOK=mi-libro`
 
-Salida: `dist/milibro.pdf` (auxiliares en `build/`).
+Salida: `dist/mi-libro.pdf` (auxiliares en `build/mi-libro/`).
 
 ## 5) Generar EPUB
 
-- `make epub`
+- `make epub BOOK=mi-libro`
 
-Salida: `dist/milibro.epub`.
+Salida: `dist/mi-libro.epub`.
 
 Notas:
 - Si tienes `tex4ebook`, se usa por defecto. Si no, el script intenta `pandoc`.
-- Para `pandoc`, puedes completar metadatos en `metadata.yaml` y usar `img/portada.jpg|png` como cover si existe.
+- Para `pandoc`, puedes completar metadatos en `tex/books/<libro>/metadata.yaml` (se crea con `make new-book`) y usar `img/portada.jpg|png` como cover si existe.
 
 ## 6) Recetas rápidas de LaTeX
 

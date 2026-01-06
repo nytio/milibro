@@ -13,14 +13,18 @@ lt_level="${LT_LEVEL:-default}"
 lt_connect_timeout="${LT_CONNECT_TIMEOUT:-2}"
 lt_timeout="${LT_TIMEOUT:-20}"
 lt_fail_on_issues="${LT_FAIL_ON_ISSUES:-0}"
+books_dir="${BOOKS_DIR:-tex/books}"
+book="${BOOK:-}"
+book_dir="${BOOK_DIR:-}"
 
 usage() {
   cat <<'EOF' >&2
 Uso:
-  scripts/languagetool_check.sh [archivos...]
+  scripts/languagetool_check.sh [opciones] [archivos...]
 
 Por defecto revisa:
-  tex/capitulo*.tex tex/backmatter.tex
+  - sin BOOK: tex/capitulo*.tex tex/backmatter.tex
+  - con BOOK: tex/books/BOOK/capitulo*.tex tex/books/BOOK/backmatter.tex
 
 Requiere:
   - LanguageTool Server en localhost (por defecto: http://localhost:8081)
@@ -33,6 +37,9 @@ Variables:
   LT_CONNECT_TIMEOUT=2
   LT_TIMEOUT=20
   LT_FAIL_ON_ISSUES=0|1
+  BOOK=...               Selecciona libro (tex/books/BOOK)
+  BOOK_DIR=...           Selecciona libro (directorio)
+  BOOKS_DIR=...          Base de libros (default: tex/books)
 
 Ejemplos:
   scripts/languagetool_check.sh tex/capitulo1.tex
@@ -46,14 +53,32 @@ if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
   exit 2
 fi
 
-files=("$@")
+files=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --book) book="${2:-}"; shift 2 ;;
+    --book-dir) book_dir="${2:-}"; shift 2 ;;
+    --books-dir) books_dir="${2:-}"; shift 2 ;;
+    --) shift; break ;;
+    -*) die "opción desconocida: $1" ;;
+    *) files+=("$1"); shift ;;
+  esac
+done
+
+tex_dir="tex"
+if [[ -n "$book_dir" ]]; then
+  tex_dir="$book_dir"
+elif [[ -n "$book" ]]; then
+  tex_dir="$books_dir/$book"
+fi
+
 if [[ ${#files[@]} -eq 0 ]]; then
   if [[ -n "${FILES:-}" ]]; then
     # shellcheck disable=SC2206
     files=($FILES)
   else
     shopt -s nullglob
-    files=(tex/capitulo*.tex tex/backmatter.tex)
+    files=("$tex_dir"/capitulo*.tex "$tex_dir"/backmatter.tex)
   fi
 fi
 

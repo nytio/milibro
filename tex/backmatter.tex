@@ -4,7 +4,7 @@
 Escribe aquí una breve biografía del autor.
 
 \ifnum\LibroUsarBibliografia=1\relax
-  \IfFileExists{tex/referencias.bib}{%
+  \IfFileExists{\LibroTexDir/referencias.bib}{%
     \cleardoublepage
     \phantomsection
     \addcontentsline{toc}{chapter}{Bibliografía}
@@ -14,7 +14,7 @@ Escribe aquí una breve biografía del autor.
     \cleardoublepage
     \chapter*{Bibliografía}
     \addcontentsline{toc}{chapter}{Bibliografía}
-    Falta el archivo \texttt{tex/referencias.bib}. Ver \texttt{docs/BIBLIOGRAFIA.md}.
+    Falta el archivo \texttt{\LibroTexDir/referencias.bib}. Ver \texttt{docs/BIBLIOGRAFIA.md}.
   }%
 \fi
 

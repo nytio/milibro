@@ -7,12 +7,60 @@ source "$script_dir/_common.sh"
 
 cd "$REPO_ROOT"
 
-main_tex="${1:-${MAIN_TEX:-milibro.tex}}"
-build_dir="${BUILD_DIR:-build}"
-dist_dir="${DIST_DIR:-dist}"
-jobname="$(basename "$main_tex" .tex)"
+books_dir="${BOOKS_DIR:-tex/books}"
+book="${BOOK:-}"
+book_dir="${BOOK_DIR:-}"
 
-OPEN_VIEWER=0 BUILD_DIR="$build_dir" DIST_DIR="$dist_dir" INCLUDEONLY="${INCLUDEONLY:-}" bash "$script_dir/build_pdf.sh" "$main_tex"
+usage() {
+  cat <<'EOF' >&2
+Uso:
+  scripts/check.sh [opciones] [main.tex]
+
+Opciones:
+  --book NAME        Compila y valida el libro tex/books/NAME (salida dist/NAME.pdf)
+  --book-dir DIR     Compila y valida el libro ubicado en DIR
+  --books-dir DIR    Base de libros (default: tex/books)
+
+Variables:
+  BOOK=...           Igual que --book
+  BOOK_DIR=...       Igual que --book-dir
+  BOOKS_DIR=...      Igual que --books-dir
+  INCLUDEONLY=...    capitulo1,capitulo2
+EOF
+}
+
+pass_args=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --book|--book-dir|--books-dir)
+      pass_args+=("$1" "${2:-}")
+      [[ "$1" == "--book" ]] && book="${2:-}"
+      [[ "$1" == "--book-dir" ]] && book_dir="${2:-}"
+      [[ "$1" == "--books-dir" ]] && books_dir="${2:-}"
+      shift 2
+      ;;
+    -h|--help) usage; exit 0 ;;
+    --) shift; break ;;
+    -*) die "opción desconocida: $1" ;;
+    *) break ;;
+  esac
+done
+
+main_tex="${1:-${MAIN_TEX:-tex/milibro.tex}}"
+build_root="${BUILD_DIR:-build}"
+dist_dir="${DIST_DIR:-dist}"
+
+if [[ -n "$book_dir" && -z "$book" ]]; then
+  book="$(basename "$book_dir")"
+fi
+
+jobname="$(basename "$main_tex" .tex)"
+[[ -n "$book" ]] && jobname="$book"
+
+build_dir="$build_root"
+[[ -n "$book" ]] && build_dir="$build_root/$book"
+
+OPEN_VIEWER=0 BUILD_DIR="$build_root" DIST_DIR="$dist_dir" INCLUDEONLY="${INCLUDEONLY:-}" bash "$script_dir/build_pdf.sh" "${pass_args[@]}" "$main_tex"
 
 log="$build_dir/$jobname.log"
 [[ -f "$log" ]] || die "no se encontró el log esperado: $log"

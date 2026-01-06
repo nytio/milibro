@@ -7,14 +7,57 @@ source "$script_dir/_common.sh"
 
 cd "$REPO_ROOT"
 
-main_tex="${1:-${MAIN_TEX:-milibro.tex}}"
-build_dir="${BUILD_DIR:-build}"
-dist_dir="${DIST_DIR:-dist}"
-jobname="$(basename "$main_tex" .tex)"
+books_dir="${BOOKS_DIR:-tex/books}"
+book="${BOOK:-}"
+book_dir="${BOOK_DIR:-}"
 
-[[ -n "$build_dir" && "$build_dir" != "/" && "$build_dir" != "." ]] || die "BUILD_DIR inválido: $build_dir"
-mkdir -p "$build_dir" "$dist_dir"
-find "$build_dir" -mindepth 1 -maxdepth 1 ! -name '.gitkeep' -exec rm -rf -- {} +
+usage() {
+  cat <<'EOF' >&2
+Uso:
+  scripts/clean.sh [opciones] [main.tex]
+
+Opciones:
+  --book NAME        Limpia build/NAME (conserva otros libros) y temporales de NAME en raíz
+  --book-dir DIR     Igual que --book usando <basename(DIR)>
+  --books-dir DIR    Base de libros (default: tex/books)
+
+Variables:
+  BOOK=...           Igual que --book
+  BOOK_DIR=...       Igual que --book-dir
+  BOOKS_DIR=...      Igual que --books-dir
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --book) book="${2:-}"; shift 2 ;;
+    --book-dir) book_dir="${2:-}"; shift 2 ;;
+    --books-dir) books_dir="${2:-}"; shift 2 ;;
+    -h|--help) usage; exit 0 ;;
+    --) shift; break ;;
+    -*) die "opción desconocida: $1" ;;
+    *) break ;;
+  esac
+done
+
+main_tex="${1:-${MAIN_TEX:-tex/milibro.tex}}"
+build_root="${BUILD_DIR:-build}"
+dist_dir="${DIST_DIR:-dist}"
+
+if [[ -n "$book_dir" && -z "$book" ]]; then
+  book="$(basename "$book_dir")"
+fi
+jobname="$(basename "$main_tex" .tex)"
+[[ -n "$book" ]] && jobname="$book"
+
+[[ -n "$build_root" && "$build_root" != "/" && "$build_root" != "." ]] || die "BUILD_DIR inválido: $build_root"
+mkdir -p "$build_root" "$dist_dir"
+
+if [[ -n "$book" ]]; then
+  rm -rf -- "$build_root/$book"
+else
+  find "$build_root" -mindepth 1 -maxdepth 1 ! -name '.gitkeep' -exec rm -rf -- {} +
+fi
 
 shopt -s nullglob
 
