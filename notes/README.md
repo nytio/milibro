@@ -8,4 +8,5 @@ Sugerencias de archivos:
 - `01_pendientes.md`
 - `02_personajes.md`
 - `03_cronologia.md`
-
+- `GUIA_DE_TRABAJO.md` (flujo, herramientas y checklist)
+- `aspell.es.pws` (diccionario personal del proyecto)

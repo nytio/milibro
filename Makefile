@@ -7,7 +7,7 @@ SCRIPTS_DIR := scripts
 OPEN_VIEWER ?= 1
 EPUB_FORMAT ?= epub3
 
-.PHONY: all pdf epub dist clean dirs check watch new-chapter
+.PHONY: all pdf epub dist clean dirs check watch new-chapter spellcheck languagetool
 
 all: pdf
 
@@ -42,3 +42,9 @@ new-chapter:
 	  exit 1; \
 	fi
 	@bash "$(SCRIPTS_DIR)/new_chapter.sh" "$(TITLE)" "$(SLUG)"
+
+spellcheck:
+	@FILES="$(FILES)" bash "$(SCRIPTS_DIR)/spellcheck.sh"
+
+languagetool:
+	@FILES="$(FILES)" bash "$(SCRIPTS_DIR)/languagetool_check.sh"
