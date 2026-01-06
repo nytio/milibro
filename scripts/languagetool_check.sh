@@ -12,6 +12,7 @@ lt_language="${LT_LANGUAGE:-es}"
 lt_level="${LT_LEVEL:-default}"
 lt_connect_timeout="${LT_CONNECT_TIMEOUT:-2}"
 lt_timeout="${LT_TIMEOUT:-20}"
+lt_fail_on_issues="${LT_FAIL_ON_ISSUES:-0}"
 
 usage() {
   cat <<'EOF' >&2
@@ -31,6 +32,7 @@ Variables:
   LT_LEVEL=default|picky
   LT_CONNECT_TIMEOUT=2
   LT_TIMEOUT=20
+  LT_FAIL_ON_ISSUES=0|1
 
 Ejemplos:
   scripts/languagetool_check.sh tex/capitulo1.tex
@@ -88,9 +90,18 @@ for f in "${files[@]}"; do
 
   format_args=(--source "$f" --text "$text_txt" --map "$map_json" --json "$resp_json")
   [[ -n "$only" ]] && format_args+=(--only "$only")
-  if ! python3 "$script_dir/languagetool_format.py" "${format_args[@]}"; then
+  set +e
+  python3 "$script_dir/languagetool_format.py" "${format_args[@]}"
+  rc=$?
+  set -e
+  if [[ "$rc" -eq 1 ]]; then
     had_issues=1
+  elif [[ "$rc" -ne 0 ]]; then
+    die "falló el formateo de resultados de LanguageTool para $f (código $rc)"
   fi
 done
 
-exit "$had_issues"
+if [[ "$had_issues" -eq 1 && "$lt_fail_on_issues" != "0" ]]; then
+  exit 1
+fi
+exit 0

@@ -120,6 +120,7 @@ Orden sugerido (rápido y repetible):
 3) Revisión de redacción/estilo (acuerdos, repeticiones, puntuación, etc.) con LanguageTool local:
    - `make languagetool`
    - Si quieres una revisión más estricta: `LT_LEVEL=picky make languagetool`
+   - Si quieres que falle cuando haya sugerencias: `LT_FAIL_ON_ISSUES=1 make languagetool`
 4) Aplica correcciones en los `.tex` (capítulos), recompila y repite:
    - `make check`
 
@@ -165,6 +166,7 @@ Variables:
 - `LT_URL` (por defecto `http://localhost:8081/v2/check`)
 - `LT_LANGUAGE` (por defecto `es`)
 - `LT_LEVEL` (`default` o `picky`)
+- `LT_FAIL_ON_ISSUES` (`0` o `1`)
 
 Ejemplos:
 - `make languagetool`

@@ -21,6 +21,7 @@ Por defecto revisa:
 Variables:
   SPELL_LANG=es          Idioma (aspell/hunspell)
   ASPELL_PERSONAL=...    Diccionario personal (por defecto: notes/aspell.es.pws si existe)
+  SPELL_FILTER_NOISE=1   Filtra ruido típico (números romanos, etc.)
 
 Ejemplos:
   scripts/spellcheck.sh --list
@@ -60,6 +61,18 @@ fi
 
 misspell_tmp="$(mktemp)"
 trap 'rm -f -- "$misspell_tmp"' EXIT
+
+filter_noise() {
+  if [[ "${SPELL_FILTER_NOISE:-1}" == "0" ]]; then
+    cat
+    return 0
+  fi
+  if have rg; then
+    rg -v '^[IVXLCDM]+$' || true
+    return 0
+  fi
+  grep -E -v '^[IVXLCDM]+$' || true
+}
 
 run_list_for_file() {
   local file="$1"
@@ -111,9 +124,9 @@ fi
 
 for f in "${files[@]}"; do
   echo "== $f =="
-  run_list_for_file "$f" | sort -u | tee -a "$misspell_tmp"
+  run_list_for_file "$f" | filter_noise | sort -u | tee -a "$misspell_tmp"
   echo
 done
 
 echo "== Resumen (únicos) =="
-sort -u "$misspell_tmp" || true
+filter_noise <"$misspell_tmp" | sort -u || true
