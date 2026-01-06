@@ -2,6 +2,7 @@
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd -P)"
+export SCRIPT_DIR REPO_ROOT
 
 die() {
   echo "Error: $*" >&2
@@ -34,7 +35,7 @@ open_file_if_possible() {
 
   if [[ -n "$viewer" ]]; then
     have "$viewer" && ("$viewer" "$file" >/dev/null 2>&1 &) && return 0
-    return 0
+    return 1
   fi
 
   return 1
@@ -59,4 +60,3 @@ open_epub() {
   done
   return 0
 }
-
