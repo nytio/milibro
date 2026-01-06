@@ -10,20 +10,21 @@ INCLUDEONLY ?=
 BOOK ?=
 BOOKS_DIR ?= tex/books
 
-.PHONY: all help doctor pdf epub dist clean dirs check watch new-book new-chapter spellcheck languagetool
+.PHONY: all help list doctor pdf epub dist clean dirs check watch new-book new-chapter spellcheck languagetool
 
 all: pdf
 
 help:
 	@printf '%s\n' \
 	  "Uso:" \
+	  "  make list                Enlista libros válidos (para usar con BOOK=...)" \
 	  "  make pdf                 Compila a dist/<libro>.pdf (usa BOOK=...)" \
 	  "  make epub                Genera dist/<libro>.epub (usa BOOK=...)" \
 	  "  make dist                pdf + epub" \
-	  "  make check               Compila y valida refs/archivos faltantes" \
+	  "  make check               Compila y valida refs/archivos faltantes (usa BOOK=...)" \
 	  "  make watch               Recompila en caliente (requiere latexmk)" \
 	  "  make new-book BOOK=      Crea tex/books/BOOK desde plantillas en tex/" \
-	  "  make new-chapter TITLE=  Crea capituloN.tex en el libro (usa BOOK=...)" \
+	  "  make new-chapter BOOK=mi-libro TITLE=  Crea capituloN.tex en el libro" \
 	  "  make spellcheck          Revisión ortográfica (aspell/hunspell)" \
 	  "  make languagetool        Revisión de estilo (LanguageTool local)" \
 	  "  make clean               Limpia build/ y auxiliares" \
@@ -35,6 +36,9 @@ help:
 	  "  INCLUDEONLY=capitulo1    Compila solo esos capítulos (separados por coma)" \
 	  "  BOOK=mi-libro            Selecciona libro en tex/books/mi-libro" \
 	  "  FILES=\"...\"              Limita archivos (spellcheck/languagetool)"
+
+list: dirs
+	@BOOKS_DIR="$(BOOKS_DIR)" bash "$(SCRIPTS_DIR)/list_books.sh"
 
 doctor:
 	@bash "$(SCRIPTS_DIR)/doctor.sh"
@@ -67,8 +71,12 @@ new-book: dirs
 	@BOOK="$(BOOK)" BOOKS_DIR="$(BOOKS_DIR)" bash "$(SCRIPTS_DIR)/new_book.sh"
 
 new-chapter:
+	@if [[ -z "$(BOOK)" ]]; then \
+	  echo "Uso: make new-chapter BOOK='mi-libro' TITLE='Título del capítulo' [SLUG=mi-slug]"; \
+	  exit 1; \
+	fi
 	@if [[ -z "$(TITLE)" ]]; then \
-	  echo "Uso: make new-chapter TITLE='Título del capítulo' [SLUG=mi-slug]"; \
+	  echo "Uso: make new-chapter BOOK='mi-libro' TITLE='Título del capítulo' [SLUG=mi-slug]"; \
 	  exit 1; \
 	fi
 	@BOOK="$(BOOK)" BOOKS_DIR="$(BOOKS_DIR)" bash "$(SCRIPTS_DIR)/new_chapter.sh" "$(TITLE)" "$(SLUG)"

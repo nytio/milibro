@@ -15,6 +15,9 @@ Si falta algo, revisa la sección **Requisitos** de `README.md` (incluye comando
 - Lista de capítulos incluidos: `tex/books/<libro>/chapters.tex`
 - Imágenes: `img/` (siempre rutas relativas)
 
+Tip: si no recuerdas el nombre del libro (valor de `BOOK`), lista los disponibles con:
+- `make list`
+
 ## 3) Crear tu primer capítulo
 
 - 1) Crea el libro:
@@ -29,6 +32,8 @@ Esto crea `tex/books/mi-libro/capituloN.tex` y lo añade a `tex/books/mi-libro/c
 - `make pdf BOOK=mi-libro`
 
 Salida: `dist/mi-libro.pdf` (auxiliares en `build/mi-libro/`).
+
+Nota: si ejecutas `make pdf` sin `BOOK=...`, compilas las plantillas base en `tex/` (útil para testear el flujo).
 
 ## 5) Generar EPUB
 

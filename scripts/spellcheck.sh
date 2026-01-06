@@ -58,6 +58,9 @@ if [[ -n "$book_dir" ]]; then
 elif [[ -n "$book" ]]; then
   tex_dir="$books_dir/$book"
 fi
+if [[ -n "$book" || -n "$book_dir" ]]; then
+  [[ -d "$tex_dir" ]] || die "no existe el directorio del libro: $tex_dir"
+fi
 
 if [[ ${#files[@]} -eq 0 ]]; then
   if [[ -n "${FILES:-}" ]]; then

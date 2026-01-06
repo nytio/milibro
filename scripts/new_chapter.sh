@@ -50,6 +50,8 @@ if [[ -n "$book_dir" ]]; then
   tex_dir="$book_dir"
 elif [[ -n "$book" ]]; then
   tex_dir="$books_dir/$book"
+else
+  die "falta BOOK o BOOK_DIR. Uso: make new-chapter BOOK='mi-libro' TITLE='Título del capítulo'"
 fi
 [[ -d "$tex_dir" ]] || die "no existe el directorio del libro: $tex_dir"
 

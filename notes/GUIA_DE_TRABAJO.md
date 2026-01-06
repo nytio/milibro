@@ -39,7 +39,7 @@ Esta guía es el “camino feliz” para escribir, compilar y preparar un libro 
    - `make clean BOOK=mi-libro` (limpia solo `build/mi-libro/`)
 
 Tips:
-- Si quieres recompilación automática mientras escribes: `make watch` (requiere `latexmk`).
+- Si quieres recompilación automática mientras escribes: `make watch BOOK=mi-libro` (requiere `latexmk`).
 - Mantén LaTeX “semántico” (capítulos/secciones/listas) y evita maquetación rígida si planeas EPUB.
 
 ## 3) Reglas de oro (para no romper PDF/EPUB)
@@ -57,12 +57,12 @@ Tips:
 - `make epub BOOK=mi-libro`: genera `dist/mi-libro.epub` (usa `tex4ebook`; si no está, intenta `pandoc`).
 - `make dist`: corre `pdf` + `epub`.
 - `make check BOOK=mi-libro`: compila y revisa problemas comunes vía el `.log` (referencias indefinidas / archivos faltantes).
-- `make watch`: recompila en caliente (requiere `latexmk`).
-- `make clean`: borra auxiliares y limpia `build/` (conserva `dist/`).
+- `make watch BOOK=mi-libro`: recompila en caliente (requiere `latexmk`).
+- `make clean BOOK=mi-libro`: borra auxiliares y limpia `build/<libro>/` (conserva `dist/`).
 - `make new-book BOOK=...`: crea `tex/books/BOOK/` copiando plantillas desde `tex/`.
 - `make new-chapter BOOK=... TITLE="..." [SLUG=...]`: crea `capituloN.tex` y lo agrega a `chapters.tex`.
-- `make spellcheck`: lista palabras sospechosas (sin modificar archivos).
-- `make languagetool`: revisión de redacción/estilo con LanguageTool local (API).
+- `make spellcheck BOOK=mi-libro`: lista palabras sospechosas (sin modificar archivos).
+- `make languagetool BOOK=mi-libro`: revisión de redacción/estilo con LanguageTool local (API).
 
 Variables comunes:
 - `OPEN_VIEWER=0` desactiva abrir visor (PDF/EPUB).

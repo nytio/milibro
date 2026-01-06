@@ -17,6 +17,7 @@ La guía de trabajo del agente está en [`AGENTS.md`](AGENTS.md) y el documento 
 
 Atajos útiles:
 - Verifica herramientas instaladas: `make doctor`
+- Lista libros válidos para `BOOK=...`: `make list`
 - Lista de comandos: `make help`
 
 ## Estructura del repositorio
@@ -94,17 +95,18 @@ Nota: estos comandos son solo referencia; instala lo que necesites según tu sis
 
 Targets:
 - `make help`: muestra un resumen de targets y variables.
+- `make list`: lista libros válidos (carpetas en `tex/books/` con `chapters.tex`) para usarlos como `BOOK=...`.
 - `make pdf`: compila el libro seleccionado por `BOOK` (si no hay `BOOK`, compila las plantillas en `tex/`).
 - `make epub`: genera el EPUB del libro seleccionado por `BOOK` (preferente `tex4ebook`; fallback `pandoc`).
 - `make dist`: ejecuta `pdf` y `epub`.
-- `make check`: compila y revisa referencias/archivos faltantes (si algo falla, devuelve error).
+- `make check`: compila y revisa referencias/archivos faltantes (si algo falla, devuelve error; usa `BOOK=...` para un libro).
 - `make doctor`: verifica que tienes herramientas mínimas en `PATH` (sin instalar nada).
-- `make watch`: recompila en caliente (requiere `latexmk`).
+- `make watch`: recompila en caliente (requiere `latexmk`; usa `BOOK=...` para un libro).
 - `make new-book BOOK=...`: crea `tex/books/BOOK/` copiando plantillas desde `tex/`.
-- `make new-chapter TITLE="..."`: crea `capituloN.tex` en el libro seleccionado y lo agrega a `chapters.tex`.
-- `make spellcheck`: lista palabras sospechosas (por defecto revisa el libro seleccionado).
-- `make languagetool`: revisión de redacción/estilo vía LanguageTool local (API).
-- `make clean`: limpia `build/` y temporales en la raíz (conserva `dist/`).
+- `make new-chapter BOOK=... TITLE="..."`: crea `capituloN.tex` en el libro seleccionado y lo agrega a `chapters.tex`.
+- `make spellcheck`: lista palabras sospechosas (usa `BOOK=...` para revisar un libro; sin `BOOK`, revisa las plantillas en `tex/`).
+- `make languagetool`: revisión de redacción/estilo vía LanguageTool local (usa `BOOK=...` para revisar un libro; sin `BOOK`, revisa las plantillas en `tex/`).
+- `make clean`: limpia `build/` y temporales en la raíz (usa `BOOK=...` para limpiar solo `build/<libro>/`; conserva `dist/`).
 
 Variables útiles:
 - `OPEN_VIEWER=0 make pdf` / `OPEN_VIEWER=0 make epub`: desactiva la apertura automática del visor.
@@ -121,6 +123,7 @@ Variables útiles:
 
 Notas:
 - La compilación genera auxiliares dentro de `build/` para mantener el directorio raíz limpio.
+- Si no indicas `BOOK`, los targets que trabajan con contenido usan `tex/` (plantillas base), útil para probar el flujo sin crear un libro.
 - Si al generar EPUB ves `tidy: not found`, instala `tidy` (o `tidy-html5`) y vuelve a ejecutar `make epub`.
 
 ## Entregables

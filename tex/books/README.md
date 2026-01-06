@@ -6,6 +6,8 @@ Este repo **ignora** (`.gitignore`) todo el contenido de `tex/books/` para evita
 
 Uso típico:
 
+- Listar libros válidos (para `BOOK=...`):
+  - `make list`
 - Crear un libro nuevo copiando las plantillas de `tex/`:
   - `make new-book BOOK=mi-libro`
 - Compilar un libro:
@@ -13,4 +15,3 @@ Uso típico:
   - `make epub BOOK=mi-libro`
 - Crear un capítulo dentro de un libro:
   - `make new-chapter BOOK=mi-libro TITLE="Título" SLUG="mi-slug"`
-

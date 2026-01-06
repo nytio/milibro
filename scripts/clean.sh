@@ -61,12 +61,24 @@ fi
 
 shopt -s nullglob
 
-# Auxiliares típicos (raíz), pero sin tocar PDFs/EPUBs ajenos al proyecto.
-root_aux=(
-  *.aux *.log *.toc *.out *.fls *.fdb_latexmk *.synctex.gz *.bbl *.blg *.bcf
-  *.run.xml *.xdv *.lof *.lot *.nav *.snm *.vrb *.ilg *.ind *.idx *.xdy
-)
-rm -f -- "${root_aux[@]}"
+# Auxiliares típicos (raíz).
+if [[ -n "$book" ]]; then
+  root_aux=(
+    "$jobname".aux "$jobname".log "$jobname".toc "$jobname".out "$jobname".fls
+    "$jobname".fdb_latexmk "$jobname".synctex.gz "$jobname".bbl "$jobname".blg
+    "$jobname".bcf "$jobname".run.xml "$jobname".xdv "$jobname".lof "$jobname".lot
+    "$jobname".nav "$jobname".snm "$jobname".vrb "$jobname".ilg "$jobname".ind
+    "$jobname".idx "$jobname".xdy
+  )
+  rm -f -- "${root_aux[@]}"
+else
+  # Sin BOOK, se limpia la raíz completa (útil para tests con plantillas).
+  root_aux=(
+    *.aux *.log *.toc *.out *.fls *.fdb_latexmk *.synctex.gz *.bbl *.blg *.bcf
+    *.run.xml *.xdv *.lof *.lot *.nav *.snm *.vrb *.ilg *.ind *.idx *.xdy
+  )
+  rm -f -- "${root_aux[@]}"
+fi
 
 # Basura típica de tex4ebook/TeX4ht en raíz (con prefijo del jobname).
 rm -f -- \

@@ -13,9 +13,9 @@ Este checklist cubre lo que el repositorio puede verificar desde terminal. La pa
 
 Comandos útiles:
 
-- `make pdf`
-- `make check`
-  - Para multi-libro: `make pdf BOOK=<libro>` y `make check BOOK=<libro>`
+- Recomendado (libro en edición): `make pdf BOOK=<libro>`
+- Recomendado (validación): `make check BOOK=<libro>`
+- Tip: `make pdf` / `make check` sin `BOOK=...` compilan solo las plantillas en `tex/` (útil para test).
 
 ## EPUB (Kindle/KDP)
 
@@ -27,4 +27,5 @@ Comandos útiles:
 
 Comandos útiles:
 
-- `make epub`
+- Recomendado (libro en edición): `make epub BOOK=<libro>`
+- Tip: `make epub` sin `BOOK=...` intenta convertir las plantillas en `tex/` (útil para test).
