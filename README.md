@@ -12,7 +12,7 @@ La guía de trabajo del agente está en `AGENTS.md` y el documento objetivo/base
   - Soporte: `tex/metadatos.tex`, `tex/preambulo.tex`, `tex/frontmatter.tex`, `tex/chapters.tex`, `tex/backmatter.tex`.
 - `img/`: imágenes y recursos gráficos del libro (siempre con rutas relativas, p.ej. `img/figura.png`).
   - Portada: `img/portada.jpg` (ver `img/README.md`).
-- `scripts/`: scripts usados por el `Makefile` para compilar/limpiar.
+- `scripts/`: scripts usados por el `Makefile` para compilar/limpiar y utilidades de revisión de texto.
 - `build/`: artefactos de compilación (auxiliares y salidas intermedias).
 - `dist/`: entregables finales (PDF/EPUB generados).
 - `docs/`: documentación operativa (estructura y checklist de publicación).
@@ -28,16 +28,35 @@ La guía de trabajo del agente está en `AGENTS.md` y el documento objetivo/base
 
 ## Requisitos (herramientas)
 
-Para compilar:
-- TeX Live (recomendado `texlive-full`) y/o `latexmk`.
-- Para EPUB:
-  - Preferente: `tex4ebook` (suele venir con TeX Live extra).
-  - Alternativa: `pandoc`.
-  - Recomendado: `tidy` (evita warnings y mejora validez del EPUB generado por `tex4ebook`).
+Base:
+- `make` + `bash`.
+
+Compilación a PDF:
+- TeX Live (recomendado `texlive-full`) y/o `latexmk` (si no está, el script cae a `pdflatex` con 2 pasadas).
+
+EPUB:
+- Preferente: `tex4ebook`.
+- Alternativa/fallback: `pandoc` (usa `metadata.yaml` si existe y `img/portada.jpg|png` como cover cuando aplica).
+- Recomendado: `tidy` (o `tidy-html5`) para reducir warnings cuando se usa `tex4ebook`.
+
+Revisión de ortografía/redacción (opcional pero recomendado):
+- `make spellcheck`: `aspell` + diccionario (`aspell-es`) o `hunspell` + diccionario (p.ej. `hunspell-es`).
+- `make languagetool`: requiere LanguageTool Server local (por defecto `http://localhost:8081`) + `curl`, `detex`, `python3`.
 
 Visores (opcionales):
-- PDF: `atril` (configurado para abrir automáticamente al finalizar `make pdf`).
-- EPUB: `fbreader` (configurado para abrir automáticamente al finalizar `make epub`).
+- PDF: `atril`, `evince` u `okular` (se abre automáticamente si hay sesión GUI y `OPEN_VIEWER=1`).
+- EPUB: `fbreader`, `ebook-viewer` (Calibre) (idem).
+
+### Instalación sugerida (Ubuntu)
+
+Nota: estos comandos son solo referencia; instala lo que necesites según tu sistema.
+
+- Suite completa (más simple): `sudo apt update && sudo apt install texlive-full`
+- Alternativa mínima (ajusta según falten paquetes): `sudo apt install texlive-latex-recommended texlive-latex-extra texlive-lang-spanish latexmk`
+- EPUB (si no viene con tu TeX Live): `sudo apt install pandoc tidy`
+- Ortografía: `sudo apt install aspell aspell-es` (o `sudo apt install hunspell hunspell-es`)
+- Cliente de LanguageTool (para `make languagetool`): `sudo apt install curl python3`
+- LanguageTool (server local): ver `notes/GUIA_DE_TRABAJO.md` (no se instala desde este repo)
 
 ## Uso con `make`
 
@@ -48,11 +67,20 @@ Targets:
 - `make check`: compila y revisa referencias/archivos faltantes (si algo falla, devuelve error).
 - `make watch`: recompila en caliente (requiere `latexmk`).
 - `make new-chapter TITLE="..."`: crea `tex/capituloN.tex` y lo agrega a `tex/chapters.tex`.
+- `make spellcheck`: lista palabras sospechosas (por defecto revisa `tex/capitulo*.tex` y `tex/backmatter.tex`).
+- `make languagetool`: revisión de redacción/estilo vía LanguageTool local (API).
 - `make clean`: limpia `build/` y temporales en la raíz (conserva `dist/`).
 
 Variables útiles:
 - `OPEN_VIEWER=0 make pdf` / `OPEN_VIEWER=0 make epub`: desactiva la apertura automática del visor.
 - `EPUB_FORMAT=epub2 make epub` o `EPUB_FORMAT=epub3 make epub`: el formato usado por `tex4ebook` (por defecto `epub3`).
+- `FILES="tex/capitulo1.tex tex/backmatter.tex" make spellcheck`: limita archivos a revisar.
+- `SPELL_LANG=es make spellcheck`: idioma del corrector (aspell/hunspell).
+- `ASPELL_PERSONAL=notes/aspell.es.pws make spellcheck`: diccionario personal del proyecto (si aplica).
+- `LT_LEVEL=picky make languagetool`: modo más estricto (LanguageTool).
+- `LT_URL=http://localhost:8081/v2/check make languagetool`: endpoint de LanguageTool (API local).
+- `LT_FAIL_ON_ISSUES=1 make languagetool`: falla si hay sugerencias (útil para CI/local).
+- `PDF_VIEWER=...` / `EPUB_VIEWER=...`: fuerza un visor concreto (si está en `PATH`).
 
 Notas:
 - La compilación genera auxiliares dentro de `build/` para mantener el directorio raíz limpio.
@@ -71,3 +99,8 @@ Este proyecto está bajo la licencia MIT. Ver `LICENSE`.
 
 - `docs/ESTRUCTURA.md`: propuesta de estructura para escritura.
 - `docs/PUBLICACION.md`: checklist técnico para publicación (PDF/EPUB).
+
+## Notas y guía de trabajo
+
+- `notes/README.md`: qué guardar en `notes/` (material de trabajo del escritor).
+- `notes/GUIA_DE_TRABAJO.md`: flujo recomendado (terminal), herramientas y checklist diario.
