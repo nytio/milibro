@@ -63,8 +63,77 @@ Una cita larga va aquí.
 \end{quote}
 ```
 
+## Saltos de línea (poesía) sin cambiar de párrafo
+
+En LaTeX, un salto de línea en el archivo fuente **no** crea un salto de línea en el PDF: se considera “espacio”. Un **párrafo nuevo** se crea con una línea en blanco.
+
+Para cortar línea **sin** iniciar un nuevo párrafo (típico en poemas), usa `\\` (o `\newline`) al final de cada verso:
+
+```tex
+Primera línea\\
+Segunda línea\\
+Tercera línea
+```
+
+Sugerencia para poemas: usa el entorno `verse` y marca los versos con `\\`:
+
+```tex
+\begin{verse}
+Primera línea\\
+Segunda línea\\
+Tercera línea
+\end{verse}
+```
+
+Notas:
+- `\\*` evita un salto de página justo después del verso.
+- Evita `\\` en prosa normal: úsalo para versos, direcciones postales, listas “en bloque”, etc.
+
+## Énfasis, cursivas y comillas
+
+```tex
+\emph{Énfasis (recomendado).}
+\textit{Cursiva.}
+\textbf{Negrita.}
+```
+
+Con UTF-8 puedes escribir comillas directamente (p. ej. `« »`, “ ”). Si te resulta más cómodo en terminal:
+
+```tex
+``comillas dobles'' y `comillas simples'
+```
+
+## Diálogos y citas cortas
+
+```tex
+\begin{quote}
+—Un diálogo o cita en bloque.
+\end{quote}
+```
+
+## Guiones y puntos suspensivos
+
+```tex
+Rango 1990--2020.
+Inciso ---con raya larga--- en el texto.
+Puntos suspensivos\ldots{}
+```
+
+## Espacios “no separables” y cortes de palabra
+
+```tex
+Sr.~Pérez  % evita salto de línea entre Sr. y Pérez
+capítulo~\ref{chap:mi-capitulo}
+hi\-per\-texto % sugiere cortes silábicos en una palabra difícil
+```
+
+## Caracteres especiales (escapar)
+
+```tex
+\% \_ \& \# \$ \{ \}
+```
+
 ## Saltos de página (ojo con EPUB)
 
 - Para PDF: `\newpage` puede ser útil.
 - Para eBook: úsalo con moderación; el flujo se reacomoda y no hay “páginas fijas”.
-
